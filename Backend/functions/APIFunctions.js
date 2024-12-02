@@ -1,3 +1,7 @@
+const User = require('../models/user_model');
+const subject = require('../models/event_model');
+const learningMaterial = require('../models/learningMaterial_model');
+
 const SignIn = async (req, res) =>{
     try{
         const data = req.body;
