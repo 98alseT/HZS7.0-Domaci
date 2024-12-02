@@ -2,13 +2,23 @@ const User = require('../models/user_model');
 const Event = require('../models/event_model');
 const LearningMaterial = require('../models/learningMaterial_model');
 
+const FindUser = require('./IntergratedFunctions');
+
 const SignIn = async (req, res) =>{
     try{
         const data = req.body;
-    
+
         let user = new User(data);
+
+        const existingUserId = await FindUser(data.username);
+        if (existingUserId) {
+            return res.status(303).json(
+                { message: "User vec postoji." }
+            );
+        }
+        
         user = await user.save();
-    
+
         res.status(201);
         res.json(user);
     }catch(error){
