@@ -5,7 +5,7 @@ const connectDB = async () => {
         mongoose.set('strictQuery', false);
 
         const connection = await mongoose.connect(
-            'mongodb+srv://admin:admin@cluster0.kpxa4.mongodb.net/hzs-radionica?retryWrites=true&w=majority&appName=Cluster0'
+            'mongodb+srv://admin:admin@hzsrad.skca8.mongodb.net/Hzsrad?retryWrites=true&w=majority&appName=Hzsrad'
         );
 
         console.log('MongoDB Connected: ' + connection.connection.host);
