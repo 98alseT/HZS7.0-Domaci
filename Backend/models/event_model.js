@@ -10,6 +10,6 @@ const eventSchema = new mongoose.Schema({
     link: { type: String, required: false}
 });
 
-const subject = mongoose.model('Event', eventSchema);
+const Event = mongoose.model('event', eventSchema);
 
-module.exports = subject;
+module.exports = Event;

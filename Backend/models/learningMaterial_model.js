@@ -6,6 +6,6 @@ const learningMaterialSchema = new mongoose.Schema({
     link: { type: String, required: false}
 });
 
-const LearningMaterial = mongoose.model('Event', learningMaterialSchema);
+const LearningMaterial = mongoose.model('learningMaterial', learningMaterialSchema);
 
 module.exports = LearningMaterial;

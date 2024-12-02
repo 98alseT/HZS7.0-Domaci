@@ -1,6 +1,6 @@
 const User = require('../models/user_model');
-const subject = require('../models/event_model');
-const learningMaterial = require('../models/learningMaterial_model');
+const Event = require('../models/event_model');
+const LearningMaterial = require('../models/learningMaterial_model');
 
 const SignIn = async (req, res) =>{
     try{
@@ -11,10 +11,10 @@ const SignIn = async (req, res) =>{
     
         res.status(201);
         res.json(user);
-        }catch(error){
-            res.status(500);
-            res.json({message: error.message});
-        }
+    }catch(error){
+        res.status(500);
+        res.json({message: error.message});
+    }
 }
 
 const LogIn = async (req, res) =>{
