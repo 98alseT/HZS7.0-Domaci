@@ -10,25 +10,53 @@ const SignIn = async (req, res) =>{
 
         let user = new User(data);
 
-        const existingUserId = await FindUser(data.username);
-        if (existingUserId) {
-            return res.status(303).json(
-                { message: "User vec postoji." }
-            );
+        const userId = await FindUser(data.username);
+        if (userId) {
+            return res.status(303).json({ 
+                message: "User vec postoji." 
+            });
         }
         
         user = await user.save();
 
-        res.status(201);
-        res.json(user);
+        res.status(201).json(user);
+
     }catch(error){
-        res.status(500);
-        res.json({message: error.message});
+        res.status(500).json({
+            message: "Nisam uspeo SignIn :(",
+            error: error.message
+        });
     }
 }
 
 const LogIn = async (req, res) =>{
-    
+    try{
+        const data = req.body;
+
+        const userId = await FindUser(data.username);
+        if (!userId) {
+            return res.status(303).json({ 
+                message: "Username ne postoji :(" 
+            });
+        }
+
+        const currentUser = await User.findById(userId);
+
+        if(currentUser.password != data.password){
+            return res.status(303).json({ 
+                message: "Password je pogresan :(" 
+            });
+        }
+
+        res.status(201).json({
+            message: "Uspesno ulogovan :)"
+        })
+    } catch(error){
+        res.status(500).json({
+            message: "Nisam uspeo LogIn :(",
+            error: error.message
+        });
+    }
 }
 
 const AddNewEvent = async (req, res) =>{
@@ -43,4 +71,4 @@ const ModelsForDisplay = async (req, res) =>{
     
 }
 
-module.exports = SignIn;
+module.exports = [SignIn, LogIn];

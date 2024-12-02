@@ -1,0 +1,6 @@
+express
+nodemon
+jsonwebtoken
+dotenv
+mongoose
+cors
