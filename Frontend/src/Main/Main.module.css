@@ -1,0 +1,137 @@
+.side-search{
+    display: flex; /* Make the parent a flex container */
+    flex-direction: column;
+    width: 20%;
+    min-height: calc(100vh - 60px);
+    background-color: red;
+    float: left;
+    padding: 16px;
+}
+
+.main-info{
+    float: right;
+    width: 80%;
+    height: auto;
+    background-color: aqua;
+}
+
+.side-search li{
+    list-style-type: none;
+}
+
+.side-search ul{
+    padding-left: 10px;
+    font-size: 20px;
+}
+
+.side-search .search {
+    width: 100%;
+}
+
+.side-search .con {
+    display: flex;
+    justify-content: center;
+}
+
+.side-search .search-text{
+    padding: 0;
+    border: 0;
+    width: 100%;
+    height: 40px;
+    border-radius: 10px 0 0 10px;
+    font-size: 22px;
+}
+
+.side-search .confirm-search-button {
+    padding: 0;
+    border: 0;
+    width: 50px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 0 10px 10px 0;
+    background-color: gray;
+}
+
+.side-search .dodaj-button{
+    width: 80%;
+    height: 40px;
+    background-color: black;
+    color: white;
+}
+
+.side-search .dodaj-button:hover{
+    background-color: white;
+    color: black;
+    transition: 0.4s;
+}
+
+.side-search .con-bt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: auto;
+    height: 100%;
+    gap: 10px;
+}
+
+
+
+
+.main-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+.main-info .post {
+    text-align: left;
+    margin-left: 30px;
+    margin-top: 30px;
+    width: 800px;
+    height: auto;
+    background-color: white;
+    padding: 20px;
+}
+
+.main-info .sep {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.main-info .event-poster{
+    margin-bottom: 10px;
+    max-width: 100%; 
+    height: auto;
+}
+
+.main-info .desc {
+    padding-left: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-info .event-name{
+    margin: 0;
+}
+
+.main-info .event-description{
+    margin: 0;
+}
+
+.main-info .join-event {
+    padding: 0;
+    width: 100px;
+    height: 40px;
+    align-self: center;
+    background-color: black;
+    color: white;
+}
+
+.main-info .join-event:hover {
+    background-color: white;
+    color: black;
+    transition: 0.4s;
+    cursor: pointer;
+}
