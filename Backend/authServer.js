@@ -1,9 +1,11 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
+
 const connectDB = require('./config/database');
-const [ClearTables, Write] = require('./functions/Dev');
 const [SignIn, LogIn, LogOut, authenticateToken] = require('./functions/AuthFunctions');
 
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
 
 connectDB();
@@ -20,10 +22,9 @@ app.post('/login', async (req, res) => {
     await LogIn(req,res);
 });
 
-app.post('/token', async (req, res) => {
-    await checkToken(req, res);
+app.get('/token', authenticateToken, async (req, res) => {
+    return res.status(200).json({ message: "Token is valid" });
 });
-
 
 app.listen(4000, () => {
     console.log('Authentication server je pokrenut na portu 4000');

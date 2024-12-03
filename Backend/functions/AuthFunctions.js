@@ -17,8 +17,6 @@ const SignIn = async (req, res) => {
                 message: "User vec postoji. :(" 
             });
         }
-        
-        res.clearCookie('token');
 
         user = await user.save();
         
@@ -32,15 +30,21 @@ const SignIn = async (req, res) => {
             });
         }
 
+        console.log("Token in res.cookie:", accessToken);
+
         res.cookie('token', accessToken, {
-            httpOnly: true, // Prevent access via JavaScript
-            sameSite: 'strict', // Protect against CSRF
-            maxAge: 86400000, // Trajanje od 24 sata u milisekundama
+            httpOnly: true,
+            sameSite: 'strict',
+            maxAge: 86400000, // 24 hours
+            path: '/',
         });
+              
 
         res.status(201).json({
             accessToken: accessToken,
         });
+        console.log("Token in res.json:", accessToken);
+
     }catch(error){
         res.status(500).json({
             message: "Nisam uspeo SignIn :(",
@@ -67,8 +71,6 @@ const LogIn = async (req, res) => {
             });
         }
 
-        res.clearCookie('token');
-
         console.log("Logged in successfully :D");
         
         const accessToken = await makeAccessToken(currentUser);
@@ -80,10 +82,11 @@ const LogIn = async (req, res) => {
         }
 
         res.cookie('token', accessToken, {
-            httpOnly: true, // Prevent access via JavaScript
-            sameSite: 'strict', // Protect against CSRF
-            maxAge: 86400000, // Trajanje od 24 sata u milisekundama
-        });
+            httpOnly: true,
+            sameSite: 'strict',
+            maxAge: 86400000, // 24 hours
+            path: '/',
+        });        
 
         res.status(201).json({
             accesToken: accessToken,
@@ -110,21 +113,29 @@ const LogOut = async (req, res) => {
 };
 
 const authenticateToken = async (req, res, next)=>{
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if(token == null) return res.status(401);
+    const token = req.cookies.token;
+    console.log(token);
+    console.log('Access Token Secret:', process.env.ACCESS_TOKEN_SECRET);
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error,user) => {
-        if(error) return res.status(403);
-        req.user = user;
+    if (!token) return res.status(401).json({ message: "Unauthorized, no token :(" });
+
+    try {
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        req.user = decoded;
+        console.log('Decoded Token:', decoded);
         next();
-    });
+    } catch (error) {
+        return res.status(403).json({ message: "Invalid or expired token" });
+    }
 };
 
 const makeAccessToken = async (currentUser) => {
     try {
-        const accessToken = jwt.sign({id: currentUser.id, username: currentUser.username}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '48h' });
-        return accessToken;
+        return jwt.sign(
+            { id: currentUser._id, username: currentUser.username }, 
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '24h' }
+        );
     } catch (error) {
         console.log("Error u pravljenju tokena: " + error);
         return null;
