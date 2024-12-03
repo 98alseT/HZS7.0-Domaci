@@ -21,4 +21,21 @@ const FindUser = async (usernameInput) => {
     }
 };
 
-module.exports = FindUser;
+const FindEvent = async (eventnameInput) => {
+    try {
+        const event = await Event.findOne({ name: eventnameInput });
+
+        if (event) {
+            console.log(`Event found: ${event}`);
+            return event.id;
+        } else {
+            console.log("No event found with the specified name.");
+            return null; 
+        }
+    } catch (error) {
+        console.error("Error fetching event:", error);
+        throw error;
+    }
+};
+
+module.exports = [FindUser, FindEvent];

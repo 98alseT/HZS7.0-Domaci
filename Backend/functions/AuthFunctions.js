@@ -1,7 +1,7 @@
 const User = require('../models/user_model');
 const Event = require('../models/event_model');
 const LearningMaterial = require('../models/learningMaterial_model');
-const FindUser = require('./IntergratedFunctions');
+const [FindUser, FindEvent] = require('./IntergratedFunctions');
 const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
@@ -88,7 +88,19 @@ const LogIn = async (req, res) => {
 };
 
 const LogOut = async (req, res) => {
-
+    try {
+        const username = req.body.username;
+        const token = req.body.token;
+        user = await User.updateOne(
+            { username: username, token: token },
+            { $unset: { token: 1 } }
+        );
+        res.status(200).json(user);
+    } catch (error) {
+        return res.status(400).json({
+            error: error
+        });
+    }
 };
 
 const RefreshToken = async (req, res) => {
@@ -151,4 +163,4 @@ const makeToken = async (currentUser) => {
     }
 };
 
-module.exports = [SignIn, LogIn, LogOut, RefreshToken];
+module.exports = [SignIn, LogIn, LogOut, RefreshToken, authenticateToken];
