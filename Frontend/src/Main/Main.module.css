@@ -1,3 +1,7 @@
+main{
+    width: 100%;
+}
+
 .side-search{
     position: fixed;
     left: 0;
@@ -110,16 +114,16 @@
     align-items: flex-start;
 }
 
-.main-info .event-poster{
-    margin-bottom: 10px;
-    max-width: 100%; 
-    height: auto;
-}
-
 .main-info .desc {
     padding-left: 8px;
     display: flex;
     flex-direction: column;
+}
+
+.main-info .event-poster{
+    margin-bottom: 10px;
+    max-width: 100%; 
+    height: auto;
 }
 
 .main-info .event-name{
@@ -135,7 +139,6 @@
     overflow-wrap: break-word;
 }
 
-
 .main-info .join-event {
     padding: 0;
     width: 100px;
@@ -150,4 +153,47 @@
     color: black;
     transition: 0.4s;
     cursor: pointer;
+}
+
+@media (max-width:920px) {
+    .side-search{
+        display: none;
+    }
+
+
+
+    .main-info{
+        width: 100%;
+        margin-top: 39.44px;
+    }
+
+    .main-info .post{
+        width: 100%;
+    }
+
+    .main-info .desc {
+        justify-content: center;
+    }
+
+    .main-info .sep {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-info .join-event {
+        margin-top: 20px;
+        width: 90%;
+        align-self: center;
+    }
+
+    .main-info .event-description {
+        margin: 0;
+        width: 100%;
+        height: auto;
+        display: block;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
 }

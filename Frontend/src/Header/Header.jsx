@@ -5,7 +5,14 @@ const Header = () => {
   return (
     <header>
       <div className={style['main-header']}>
-        <img src="/path/to/logo.png" alt="logo" className={style.logo} />
+        <div className={style['left-part']}>
+          <div className={style['three-lines']}>
+            <div className={style['line']}></div>
+            <div className={style['line']}></div>
+            <div className={style['line']}></div>
+          </div>
+          <img src="/path/to/logo.png" alt="logo" className={style.logo} />
+        </div>
         <h1 className={style['header-h1']}>EDUOBAVESTENJA</h1>
         {/*<div className={style.search}>
           <input onClick={'getwide'} type="text" className={style['search-text']} />
