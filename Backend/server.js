@@ -2,7 +2,7 @@ const express = require('express');
 const connectDB = require('./config/database');
 const [ClearTables, Write] = require('./functions/Dev');
 const [AddNewEvent, AddNewLearningMaterial] = require('./functions/APIFunctions');
-const [SignIn, LogIn, LogOut, RefreshToken, authenticateToken] = require('./functions/AuthFunctions')
+const [SignIn, LogIn, LogOut, authenticateToken] = require('./functions/AuthFunctions')
 const app = express();
 app.use(express.json());
 

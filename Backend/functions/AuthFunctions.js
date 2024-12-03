@@ -1,7 +1,6 @@
 const User = require('../models/user_model');
 const Event = require('../models/event_model');
 const LearningMaterial = require('../models/learningMaterial_model');
-const [FindUser, FindEvent] = require('./IntergratedFunctions');
 const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
@@ -9,32 +8,38 @@ require('dotenv').config();
 const SignIn = async (req, res) => {
     try{
         const data = req.body;
-
         let user = new User(data);
 
-        const userId = await FindUser(data.username);
-        if (userId) {
+        const userId = await User.findOne({username: data.username});
+
+        if (userId != null) {
             return res.status(303).json({ 
                 message: "User vec postoji. :(" 
             });
         }
         
+        res.clearCookie('token');
+
         user = await user.save();
         
         console.log("Signed in successfully :D");
 
         const accessToken = await makeAccessToken(user);
-        const refreshToken = await makeRefreshToken(user);
 
-        if(accessToken == null || refreshToken == null){
+        if(accessToken == null){
             return res.status(501).json({
-                message: "Couldn't make an access or refresh token :("
+                message: "Couldn't make an access token :("
             });
         }
 
+        res.cookie('token', accessToken, {
+            httpOnly: true, // Prevent access via JavaScript
+            sameSite: 'strict', // Protect against CSRF
+            maxAge: 86400000, // Trajanje od 24 sata u milisekundama
+        });
+
         res.status(201).json({
             accessToken: accessToken,
-            refreshToken: refreshToken
         });
     }catch(error){
         res.status(500).json({
@@ -47,15 +52,14 @@ const SignIn = async (req, res) => {
 const LogIn = async (req, res) => {
     try{
         const data = req.body;
+        
+        const currentUser = await User.findOne();
 
-        const userId = await FindUser(data.username);
-        if (!userId) {
+        if (currentUser == null) {
             return res.status(303).json({ 
                 message: "Username ne postoji :(" 
             });
         }
-
-        const currentUser = await User.findById(userId);
 
         if(currentUser.password != data.password){
             return res.status(303).json({ 
@@ -63,20 +67,26 @@ const LogIn = async (req, res) => {
             });
         }
 
+        res.clearCookie('token');
+
         console.log("Logged in successfully :D");
         
         const accessToken = await makeAccessToken(currentUser);
-        const refreshToken = await makeRefreshToken(currentUser);
-        //tokene ispocetka
-        if(accessToken == null || refreshToken == null){
+
+        if(accessToken == null){
             return res.status(501).json({
-                message: "Couldn't make an access or refresh token :("
+                message: "Couldn't make an access token :("
             });
         }
 
+        res.cookie('token', accessToken, {
+            httpOnly: true, // Prevent access via JavaScript
+            sameSite: 'strict', // Protect against CSRF
+            maxAge: 86400000, // Trajanje od 24 sata u milisekundama
+        });
+
         res.status(201).json({
             accesToken: accessToken,
-            refreshToken: refreshToken
         });
     } catch(error){
         res.status(500).json({
@@ -88,53 +98,14 @@ const LogIn = async (req, res) => {
 
 const LogOut = async (req, res) => {
     try {
-        const username = req.body.username;
-        const token = req.body.token;
-        user = await User.updateOne(
-            { username: username, token: token },
-            { $unset: { token: 1 } }
-        );
-        res.status(200).json(user);
-    } catch (error) {
-        return res.status(400).json({
-            error: error
+        res.clearCookie('token', {
+            httpOnly: true,
+            sameSite: 'strict',
         });
-    }
-};
 
-const RefreshToken = async (req, res) => {
-    try {
-        const refreshToken = req.body.token;
-        if(refreshToken == null) { 
-            return res.status(401).json({
-                error: "No refresh token in request."
-            });
-        }
-        
-        const user = await User.findOne({token: refreshToken});
-
-        if(refreshToken == null){
-            return res.status(403).json({
-                error: "Refresh token not found."
-            }); 
-        }
-
-        jwt.verify(user.token, process.env.REFRESH_TOKEN_SECRET, (error, user) => {
-            if(error){
-                return res.status(403).json({
-                    error: error
-                });
-            }
-            const accessToken = makeToken(user.id);
-            res.status(200).json({
-                accessToken: accessToken
-            });
-        });
+        res.status(200).json({ message: 'Logged out successfully' });
     } catch (error) {
-        res.status(403).json({
-            error: error,
-            msg: "u catchu"
-        })
+        res.status(500).json({ error: 'Failed to log out' });
     }
 };
 
@@ -150,21 +121,9 @@ const authenticateToken = async (req, res, next)=>{
     });
 };
 
-const makeRefreshToken = async (currentUser) => {
-    try {
-        const refreshToken = jwt.sign({id: currentUser.id, username: currentUser.username}, process.env.REFRESH_TOKEN_SECRET);
-        currentUser.token = refreshToken;
-        currentUser = await currentUser.save();
-        return refreshToken
-    } catch (error) {
-        console.log("Error u pravljenju tokena: " + error);
-        return null;
-    }
-};
-
 const makeAccessToken = async (currentUser) => {
     try {
-        const accessToken = jwt.sign({id: currentUser.id, username: currentUser.username}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
+        const accessToken = jwt.sign({id: currentUser.id, username: currentUser.username}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '48h' });
         return accessToken;
     } catch (error) {
         console.log("Error u pravljenju tokena: " + error);
@@ -172,4 +131,4 @@ const makeAccessToken = async (currentUser) => {
     }
 };
 
-module.exports = [SignIn, LogIn, LogOut, RefreshToken, authenticateToken];
+module.exports = [SignIn, LogIn, LogOut, authenticateToken];

@@ -1,7 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/database');
 const [ClearTables, Write] = require('./functions/Dev');
-const [SignIn, LogIn, LogOut, RefreshToken, authenticateToken] = require('./functions/AuthFunctions');
+const [SignIn, LogIn, LogOut, authenticateToken] = require('./functions/AuthFunctions');
 
 const app = express();
 app.use(express.json());
@@ -21,7 +21,7 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/token', async (req, res) => {
-    await RefreshToken(req, res);
+    await checkToken(req, res);
 });
 
 

@@ -2,16 +2,14 @@ const User = require('../models/user_model');
 const Event = require('../models/event_model');
 const LearningMaterial = require('../models/learningMaterial_model');
 require('dotenv').config();
-const [FindUser, FindEvent] = require('./IntergratedFunctions');
 
 //post
 const AddNewEvent = async (req, res) =>{
     try {
-        const token = req.body.token;
         const data = req.body;
         let event = new Event(data);
 
-        const eventId = await FindEvent(data.name);
+        const eventId = await Event.findOne({name: data.name});
         if (eventId) {
             return res.status(303).json({ 
                 message: "Event vec postoji. :(" 
