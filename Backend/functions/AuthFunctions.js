@@ -68,7 +68,7 @@ const LogIn = async (req, res) => {
         
         const accessToken = await makeToken(currentUser);
         const refreshToken = jwt.sign({id: currentUser.id, username: currentUser.username}, process.env.REFRESH_TOKEN_SECRET);
-
+        //tokene ispocetka
         if(accessToken == null){
             return res.status(501).json({
                 message: "Couldn't make an access token :("

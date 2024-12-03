@@ -7,6 +7,7 @@ const [FindUser, FindEvent] = require('./IntergratedFunctions');
 //post
 const AddNewEvent = async (req, res) =>{
     try {
+        const token = req.body.token;
         const data = req.body;
         let event = new Event(data);
 
