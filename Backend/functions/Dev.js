@@ -25,22 +25,33 @@ const ClearTables = async (req, res) => {
 
 const Write = async (req, res) => {
     try {
-        const model = req.query.model;
+        const model = req.body.model;
 
-        if(!models[model]){
-            res.status(400).json({ 
+        if (!model) {
+            return res.status(400).json({ 
+                message: "Nema modela :(" 
+            });
+        }
+
+        const modelName = model.toLowerCase();
+
+        if (!models[modelName]) {
+            return res.status(400).json({ 
                 message: "Ne postoji taj model :(" 
             });
         }
 
-        model = await models[model].find();
-        res.status(200).json(model);
+        const data = await models[modelName].find();
+
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ 
             message: "Error u preuzimanju podataka :(",
             error: error.message
         });
     }
-}
+};
+
+
 
 module.exports = [ClearTables, Write];
