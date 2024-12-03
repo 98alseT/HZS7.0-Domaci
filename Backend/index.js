@@ -6,7 +6,7 @@ const [SignIn, LogIn] = require('./functions/APIFunctions');
 
 const app = express();
 app.use(express.json());
-
+//test
 connectDB();
 
 app.post('/api/brisi', ClearTables);
