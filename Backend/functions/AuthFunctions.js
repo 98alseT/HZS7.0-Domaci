@@ -23,13 +23,12 @@ const SignIn = async (req, res) => {
         
         console.log("Signed in successfully :D");
 
-        const accessToken = await makeToken(user);
-        const refreshToken = jwt.sign({id: user.id, username: user.username}, process.env.REFRESH_TOKEN_SECRET);
+        const accessToken = await makeAccessToken(user);
+        const refreshToken = await makeRefreshToken(user);
 
-
-        if(accessToken == null){
+        if(accessToken == null || refreshToken == null){
             return res.status(501).json({
-                message: "Couldn't make an access token :("
+                message: "Couldn't make an access or refresh token :("
             });
         }
 
@@ -66,12 +65,12 @@ const LogIn = async (req, res) => {
 
         console.log("Logged in successfully :D");
         
-        const accessToken = await makeToken(currentUser);
-        const refreshToken = jwt.sign({id: currentUser.id, username: currentUser.username}, process.env.REFRESH_TOKEN_SECRET);
+        const accessToken = await makeAccessToken(currentUser);
+        const refreshToken = await makeRefreshToken(currentUser);
         //tokene ispocetka
-        if(accessToken == null){
+        if(accessToken == null || refreshToken == null){
             return res.status(501).json({
-                message: "Couldn't make an access token :("
+                message: "Couldn't make an access or refresh token :("
             });
         }
 
@@ -133,7 +132,8 @@ const RefreshToken = async (req, res) => {
         });
     } catch (error) {
         res.status(403).json({
-            error: error
+            error: error,
+            msg: "u catchu"
         })
     }
 };
@@ -150,12 +150,21 @@ const authenticateToken = async (req, res, next)=>{
     });
 };
 
-const makeToken = async (currentUser) => {
+const makeRefreshToken = async (currentUser) => {
     try {
-        console.log(currentUser);
-        const accessToken = jwt.sign({id: currentUser.id, username: currentUser.username}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
-        currentUser.token = accessToken;
+        const refreshToken = jwt.sign({id: currentUser.id, username: currentUser.username}, process.env.REFRESH_TOKEN_SECRET);
+        currentUser.token = refreshToken;
         currentUser = await currentUser.save();
+        return refreshToken
+    } catch (error) {
+        console.log("Error u pravljenju tokena: " + error);
+        return null;
+    }
+};
+
+const makeAccessToken = async (currentUser) => {
+    try {
+        const accessToken = jwt.sign({id: currentUser.id, username: currentUser.username}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
         return accessToken;
     } catch (error) {
         console.log("Error u pravljenju tokena: " + error);
