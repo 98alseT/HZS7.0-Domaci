@@ -48,11 +48,17 @@ const AddNewLearningMaterial = async (req, res) =>{
 
 //get
 const ModelsForDisplay = async (req, res) =>{
-    if(req.body.type == 'event'){
-
+    if(req.body.typePost == 'event'){
+        tags = req.body.tags;
+        types = req.body.type;
+        let models = await Event.find({ tag: types});
+        models = models.find({type: tags})
+        res.status(200).json(models);
     }
-    else{
-
+    else if(req.body.typePost == 'learningMaterial'){
+        tags = req.body.tags;
+        let models = await LearningMaterial.find({ tag: tags});
+        res.status(200).json(models);
     }
 }
 
