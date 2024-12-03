@@ -21,27 +21,4 @@ const FindUser = async (usernameInput) => {
     }
 };
 
-const authenticateToken = async (req, res, next)=>{
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if(token == null) return res.status(401);
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error,user) => {
-        if(error) return res.status(403);
-        req.user = user;
-        next();
-    });
-};
-
-const makeToken = async (currentUser) => {
-    try {
-        console.log(currentUser);
-        const accessToken = jwt.sign(currentUser, process.env.ACCESS_TOKEN_SECRET);
-        return accessToken;
-    } catch (error) {
-        console.log("Error u pravljenju tokena: " + error);
-        return null;
-    }
-};
-
-module.exports = [FindUser, makeToken];
+module.exports = FindUser;

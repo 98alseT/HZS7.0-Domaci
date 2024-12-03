@@ -19,7 +19,7 @@ app.post('/api/login', async (req, res) => {
     await LogIn(req,res);
 });
 
-app.get('/api/see', async (req, res) => {
+app.get('/api/see', authenticateToken, async (req, res) => {
     try {
         const token = req.headers['authorization']?.split(' ')[1];
 
@@ -48,7 +48,7 @@ app.listen(3000, () => {
     console.log('Server je pokrenut na portu 3000');
 });
 
-app.post('/dev/brisi', ClearTables);
+app.delete('/dev/brisi', ClearTables);
 app.get('/dev/ispisi', async (req, res) => {
     await Write(req, res);
 })
