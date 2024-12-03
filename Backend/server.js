@@ -1,7 +1,6 @@
 const express = require('express');
 const connectDB = require('./config/database');
 const [ClearTables, Write] = require('./functions/Dev');
-const [SignIn, LogIn] = require('./functions/APIFunctions');
 //temp
 const User = require('./models/user_model');
 const jwt = require('jsonwebtoken');
@@ -19,6 +18,7 @@ app.post('/api/login', async (req, res) => {
     await LogIn(req,res);
 });
 
+/*
 app.get('/api/see', authenticateToken, async (req, res) => {
     try {
         const token = req.headers['authorization']?.split(' ')[1];
@@ -43,6 +43,7 @@ app.get('/api/see', authenticateToken, async (req, res) => {
         });
     }
 });
+*/
 
 app.listen(3000, () => {
     console.log('Server je pokrenut na portu 3000');

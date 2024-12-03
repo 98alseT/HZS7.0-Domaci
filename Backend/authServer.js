@@ -24,6 +24,7 @@ app.post('/token', async (req, res) => {
     await RefreshToken(req, res);
 });
 
+
 app.listen(4000, () => {
     console.log('Authentication server je pokrenut na portu 4000');
 });

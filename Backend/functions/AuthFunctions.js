@@ -1,7 +1,6 @@
 const User = require('../models/user_model');
 const Event = require('../models/event_model');
 const LearningMaterial = require('../models/learningMaterial_model');
-const Token = require('../models/token_model');
 const FindUser = require('./IntergratedFunctions');
 const jwt = require('jsonwebtoken');
 
@@ -24,7 +23,9 @@ const SignIn = async (req, res) => {
         
         console.log("Signed in successfully :D");
 
-        const accessToken = await makeToken(user.id);
+        const accessToken = await makeToken(user);
+        const refreshToken = jwt.sign({id: user.id, username: user.username}, process.env.REFRESH_TOKEN_SECRET);
+
 
         if(accessToken == null){
             return res.status(501).json({
@@ -33,7 +34,8 @@ const SignIn = async (req, res) => {
         }
 
         res.status(201).json({
-            accessToken: accessToken
+            accessToken: accessToken,
+            refreshToken: refreshToken
         });
     }catch(error){
         res.status(500).json({
@@ -64,8 +66,8 @@ const LogIn = async (req, res) => {
 
         console.log("Logged in successfully :D");
         
-        const accessToken = await makeToken(currentUser.id);
-        const refreshToken = jwt.sign(currentUser.id, procces.env.REFRESH_TOKEN_SECRET);
+        const accessToken = await makeToken(currentUser);
+        const refreshToken = jwt.sign({id: currentUser.id, username: currentUser.username}, process.env.REFRESH_TOKEN_SECRET);
 
         if(accessToken == null){
             return res.status(501).json({
@@ -98,7 +100,7 @@ const RefreshToken = async (req, res) => {
             });
         }
         
-        refreshToken = await Token.findOne({token: refreshToken});
+        refreshToken = await UserfindOne({token: refreshToken}).token;
 
         if(refreshToken == null){
             return res.status(403).json({
@@ -139,7 +141,9 @@ const authenticateToken = async (req, res, next)=>{
 const makeToken = async (currentUser) => {
     try {
         console.log(currentUser);
-        const accessToken = jwt.sign(currentUser, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s'});
+        const accessToken = jwt.sign({id: currentUser.id, username: currentUser.username}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
+        currentUser.token = accessToken;
+        currentUser = await currentUser.save();
         return accessToken;
     } catch (error) {
         console.log("Error u pravljenju tokena: " + error);
