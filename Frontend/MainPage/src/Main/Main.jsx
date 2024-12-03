@@ -1,13 +1,15 @@
-import React from 'react'
-import style from './Main.module.css'
-import Post from './Post'
+import React from 'react';
+import style from './Main.module.css';
+import Post from './Post';
 
-const Main = () => {
+const Main = ({ isSideSearchVisible }) => {
   return (
     <main>
-        {/*elena*/}
-        <div className={style['side-search']}>
-            <div className={style.search}>
+      <div
+        className={`${style['side-search']} ${
+          isSideSearchVisible ? style['side-search-visible'] : ''
+        }`}>
+        <div className={style.search}>
                 <div className={style['con']}>
                     <input type="text" className={style['search-text']} />
                     <button className={style['confirm-search-button']}></button>
@@ -26,25 +28,24 @@ const Main = () => {
             </div>
         </div>
 
-        {/*veljko*/}
-        <div className={style['main-info']}>
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-        </div>
+      <div className={style['main-info']}>
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+      </div>
     </main>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

@@ -156,11 +156,17 @@ main{
 }
 
 @media (max-width:920px) {
-    .side-search{
-        display: none;
+    .side-search {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        width: 30%;
+    }
+      
+    .side-search-visible {
+        transform: translateX(0);
     }
 
-
+      
 
     .main-info{
         width: 100%;
@@ -195,5 +201,11 @@ main{
         display: block;
         word-wrap: break-word;
         overflow-wrap: break-word;
+    }
+}
+
+@media (max-width:420px) {
+    .side-search {
+        width: 40%;
     }
 }
