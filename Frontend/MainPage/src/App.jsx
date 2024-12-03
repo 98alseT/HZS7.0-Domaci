@@ -1,14 +1,20 @@
-import React from 'react'
-import Header from './Header/Header.jsx'
-import Main from './Main/Main.jsx'
+import React, { useState } from 'react';
+import Header from './Header/Header'
+import Main from './Main/Main';
 
 const App = () => {
+  const [isSideSearchVisible, setSideSearchVisible] = useState(false);
+
+  const toggleSideSearch = () => {
+    setSideSearchVisible(!isSideSearchVisible);
+  };
+
   return (
     <>
-      <Header />
-      <Main />
+      <Header toggleSideSearch={toggleSideSearch} />
+      <Main isSideSearchVisible={isSideSearchVisible} />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

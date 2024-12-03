@@ -73,7 +73,6 @@
     .main-header {
         flex-direction: row;
         justify-content: space-between;
-        height: auto;
         padding: 0 10px;
     }
 
