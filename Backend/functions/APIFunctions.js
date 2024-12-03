@@ -1,12 +1,9 @@
 const User = require('../models/user_model');
 const Event = require('../models/event_model');
 const LearningMaterial = require('../models/learningMaterial_model');
+const [FindUser, makeToken] = require('./IntergratedFunctions');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-
-console.log(process.env.ACCESS_TOKEN_SECRET);
-
-const FindUser = require('./IntergratedFunctions');
 
 const SignIn = async (req, res) =>{
     try{
@@ -25,10 +22,17 @@ const SignIn = async (req, res) =>{
         
         console.log("Signed in successfully :D");
 
-        res.status(201).json(user);
-        console.log("logujem se")//temp
-        LogIn(user, res);
+        const accessToken = await makeToken(user.id);
 
+        if(accessToken == null){
+            return res.status(501).json({
+                message: "Couldn't make an access token :("
+            });
+        }
+
+        res.status(201).json({
+            accessToken: accessToken
+        });
     }catch(error){
         res.status(500).json({
             message: "Nisam uspeo SignIn :(",
@@ -57,7 +61,15 @@ const LogIn = async (req, res) =>{
         }
 
         console.log("Logged in successfully :D");
-        const accessToken = jwt.sign(currentUser.id, process.env.ACCESS_TOKEN_SECRET);
+        
+        const accessToken = await makeToken(currentUser.id);
+
+        if(accessToken == null){
+            return res.status(501).json({
+                message: "Couldn't make an access token :("
+            });
+        }
+
         res.status(201).json({
             accesToken: accessToken
         });
@@ -69,14 +81,17 @@ const LogIn = async (req, res) =>{
     }
 }
 
+//post
 const AddNewEvent = async (req, res) =>{
     
 }
 
+//post
 const AddNewLearningMaterial = async (req, res) =>{
     
 }
 
+//get
 const ModelsForDisplay = async (req, res) =>{
     
 }

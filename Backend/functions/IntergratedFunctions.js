@@ -31,5 +31,17 @@ const authenticateToken = async (req, res, next)=>{
         req.user = user;
         next();
     });
-}
-module.exports = FindUser;
+};
+
+const makeToken = async (currentUser) => {
+    try {
+        console.log(currentUser);
+        const accessToken = jwt.sign(currentUser, process.env.ACCESS_TOKEN_SECRET);
+        return accessToken;
+    } catch (error) {
+        console.log("Error u pravljenju tokena: " + error);
+        return null;
+    }
+};
+
+module.exports = [FindUser, makeToken];
