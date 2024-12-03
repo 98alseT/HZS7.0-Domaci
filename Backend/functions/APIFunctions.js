@@ -13,11 +13,13 @@ const SignIn = async (req, res) =>{
         const userId = await FindUser(data.username);
         if (userId) {
             return res.status(303).json({ 
-                message: "User vec postoji." 
+                message: "User vec postoji. :(" 
             });
         }
         
         user = await user.save();
+        
+        console.log("Signed in successfully :D");
 
         res.status(201).json(user);
 
@@ -48,8 +50,10 @@ const LogIn = async (req, res) =>{
             });
         }
 
+        console.log("Logged in successfully :D");
+
         res.status(201).json({
-            message: "Uspesno ulogovan :)"
+            message: "Uspesno ulogovan :D"
         })
     } catch(error){
         res.status(500).json({

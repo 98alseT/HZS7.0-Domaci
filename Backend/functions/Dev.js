@@ -1,12 +1,15 @@
-const User = require('../models/user_model');
-const Event = require('../models/event_model');
-const LearningMaterial = require('../models/learningMaterial_model');
+const models = {
+    user: require('../models/user_model'),
+    event: require('../models/event_model'),
+    learningMaterial: require('../models/learningMaterial_model')
+    //Dodati jos ako dodamo jos... real
+};
 
 const ClearTables = async (req, res) => {
     try {
-        await User.deleteMany({});
-        await Event.deleteMany({});
-        await LearningMaterial.deleteMany({});
+        for(let model in models){
+            await models[model].deleteMany({});
+        }
 
         res.status(200).json({
             message:"Sve tabele izbrisane!"
@@ -20,4 +23,24 @@ const ClearTables = async (req, res) => {
     }
 }
 
-module.exports = ClearTables;
+const Write = async (req, res) => {
+    try {
+        const model = req.query.model;
+
+        if(!models[model]){
+            res.status(400).json({ 
+                message: "Ne postoji taj model :(" 
+            });
+        }
+
+        model = await models[model].find();
+        res.status(200).json(model);
+    } catch (error) {
+        res.status(500).json({ 
+            message: "Error u preuzimanju podataka :(",
+            error: error.message
+        });
+    }
+}
+
+module.exports = [ClearTables, Write];
