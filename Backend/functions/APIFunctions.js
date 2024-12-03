@@ -1,6 +1,10 @@
 const User = require('../models/user_model');
 const Event = require('../models/event_model');
 const LearningMaterial = require('../models/learningMaterial_model');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
+console.log(process.env.ACCESS_TOKEN_SECRET);
 
 const FindUser = require('./IntergratedFunctions');
 
@@ -22,6 +26,8 @@ const SignIn = async (req, res) =>{
         console.log("Signed in successfully :D");
 
         res.status(201).json(user);
+        console.log("logujem se")//temp
+        LogIn(user, res);
 
     }catch(error){
         res.status(500).json({
@@ -51,10 +57,10 @@ const LogIn = async (req, res) =>{
         }
 
         console.log("Logged in successfully :D");
-
+        const accessToken = jwt.sign(currentUser.id, process.env.ACCESS_TOKEN_SECRET);
         res.status(201).json({
-            message: "Uspesno ulogovan :D"
-        })
+            accesToken: accessToken
+        });
     } catch(error){
         res.status(500).json({
             message: "Nisam uspeo LogIn :(",
