@@ -100,7 +100,7 @@ const RefreshToken = async (req, res) => {
             });
         }
         
-        refreshToken = await UserfindOne({token: refreshToken}).token;
+        const user = await User.findOne({token: refreshToken});
 
         if(refreshToken == null){
             return res.status(403).json({
@@ -108,7 +108,7 @@ const RefreshToken = async (req, res) => {
             }); 
         }
 
-        jwt.verify(refreshToken.token, process.env.REFRESH_TOKEN_SECRET, (error, user) => {
+        jwt.verify(user.token, process.env.REFRESH_TOKEN_SECRET, (error, user) => {
             if(error){
                 return res.status(403).json({
                     error: error
