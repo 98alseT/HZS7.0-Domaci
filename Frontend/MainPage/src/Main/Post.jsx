@@ -1,11 +1,14 @@
 import React from 'react'
 import style from './Main.module.css'
 import eventImg from './testEvent.jpg'
+import { useNavigate } from 'react-router-dom'
 
 const Post = () => {
+  const navigate = useNavigate();
+
   return (
     <div className={style['post']}>
-        <img src={eventImg} alt="event-poster" className={style['event-poster']} />
+        <img src={eventImg} alt="event-poster" className={style['event-poster']} onClick={() => navigate('/event-details')}/>
         <div className={style['sep']}>
             <div className={style['desc']}>
                 <h1 className={style['event-name']}>Test Event</h1>

@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import style from './Main.module.css';
 import Post from './Post';
 
 const Main = ({ isSideSearchVisible }) => {
+  const navigate = useNavigate();
+
   return (
     <main>
       <div
@@ -10,23 +13,25 @@ const Main = ({ isSideSearchVisible }) => {
           isSideSearchVisible ? style['side-search-visible'] : ''
         }`}>
         <div className={style.search}>
-                <div className={style['con']}>
-                    <input type="text" className={style['search-text']} />
-                    <button className={style['confirm-search-button']}></button>
-                </div>
-            </div>
-            <ul>
-                <li><label> <input type="checkbox" /> Matematika</label> </li>
-                <li><label> <input type="checkbox" /> Programiranje</label> </li>
-                <li><label> <input type="checkbox" /> Hakatoni</label> </li>
-                <li><label> <input type="checkbox" /> Robotika</label> </li>
-                <li><label> <input type="checkbox" /> Veštačka inteligencija</label> </li>
-            </ul>
-            <div className={style['con-bt']}>
-                <button className={style['dodaj-button']}>Dodaj tag</button>
-                <button className={style['dodaj-button']}>Dodaj post</button>
-            </div>
+          <div className={style['con']}>
+            <input type="text" className={style['search-text']} />
+            <button className={style['confirm-search-button']}></button>
+          </div>
         </div>
+        <ul>
+          <li><label><input type="checkbox" /> Matematika</label></li>
+          <li><label><input type="checkbox" /> Programiranje</label></li>
+          <li><label><input type="checkbox" /> Hakatoni</label></li>
+          <li><label><input type="checkbox" /> Robotika</label></li>
+          <li><label><input type="checkbox" /> Veštačka inteligencija</label></li>
+        </ul>
+        <div className={style['con-bt']}>
+          <button className={`${style['dodaj-button']} ${style['dodaj-post']}`} onClick={() => navigate('/add-post')}>
+            Dodaj post
+          </button>
+          <button className={style['dodaj-button']}>Dodaj tag</button>
+        </div>
+      </div>
 
       <div className={style['main-info']}>
         <Post />

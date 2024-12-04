@@ -3,6 +3,7 @@ main{
 }
 
 .side-search{
+    overflow-y: auto;
     position: fixed;
     left: 0;
     bottom: 0;
@@ -13,6 +14,7 @@ main{
     background-color: red;
     float: left;
     padding: 16px;
+    overflow-y: auto;
 }
 
 .main-info{
@@ -28,7 +30,7 @@ main{
 }
 
 .side-search ul{
-    padding-left: 10px;
+    padding-left: 0px;
     font-size: 20px;
 }
 
@@ -121,6 +123,7 @@ main{
 }
 
 .main-info .event-poster{
+    cursor: pointer;
     margin-bottom: 10px;
     max-width: 100%; 
     height: auto;
@@ -159,11 +162,17 @@ main{
     .side-search {
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
-        width: 30%;
+        width: 40%;
+        top: 60px;
+        padding: 8px;
     }
       
     .side-search-visible {
         transform: translateX(0);
+    }
+
+    .side-search .con-bt{
+        justify-content: flex-end;
     }
 
       
@@ -202,10 +211,23 @@ main{
         word-wrap: break-word;
         overflow-wrap: break-word;
     }
+    .side-search ul{
+        font-size: 12px;
+    }
+    .side-search .dodaj-button{
+        width: 80%;
+        height: 24px;
+    }
 }
 
 @media (max-width:420px) {
     .side-search {
-        width: 40%;
+        width: 60%;
+        padding: 8px;
+    }
+
+    .side-search .dodaj-button{
+        width: 100%;
+        height: 30px;
     }
 }
