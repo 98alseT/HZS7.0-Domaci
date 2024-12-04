@@ -47,13 +47,17 @@ const AddNewLearningMaterial = async (req, res) =>{
 }
 
 //get
-const ModelsForDisplay = async (req, res) => {
+const Display = async (req, res) => {
     try {
         if (req.body.typePost == 'event') {
             const tags = req.body.tags;
             const types = req.body.type;
 
-            let models = await Event.find({ tag: { $in: types } });
+            let models;
+
+            if(types && types.lenght > 0){
+                models = await Event.find({ tag: { $in: types } });
+            }
 
             if (tags && tags.length > 0) {
                 models = models.filter(model => tags.some(tag => model.type.includes(tag)));
@@ -62,7 +66,11 @@ const ModelsForDisplay = async (req, res) => {
         } 
         else if (req.body.typePost == 'learningMaterial') {
             const tags = req.body.tags;
-            let models = await LearningMaterial.find({ tag: { $in: tags } });
+            if(tags && tags.lenght > 0){
+                let models = await LearningMaterial.find({ tag: { $in: tags } });
+                return res.status(200).json(models);
+            }
+            let models = await LearningMaterial.find();
             return res.status(200).json(models);
         }
         return res.status(400).json({ message: "Invalid typePost value" });
@@ -73,4 +81,4 @@ const ModelsForDisplay = async (req, res) => {
 };
 
 
-module.exports = [AddNewEvent, AddNewLearningMaterial];
+module.exports = [AddNewEvent, AddNewLearningMaterial, Display];
