@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 
 const connectDB = require('./config/database');
 const [ClearTables, Write] = require('./functions/Dev');
-const [AddNewEvent, AddNewLearningMaterial, Display, UpdateEvent, DeleteEvent, UpdateLearningMaterial, DeleteLearningMaterial] = require('./functions/APIFunctions');
+const [AddNewEvent, AddNewLearningMaterial, Display, UpdateEvent, DeleteEvent, UpdateLearningMaterial, DeleteLearningMaterial, GetEvent, GetMaterial, MyEvents, MyMaterials] = require('./functions/APIFunctions');
 const [SignIn, LogIn, LogOut, authenticateToken] = require('./functions/AuthFunctions');
 
 const app = express();
@@ -11,6 +11,22 @@ app.use(cookieParser());
 app.use(express.json());
  
 connectDB();
+
+app.get('/api/myevents', authenticateToken, async (req, res) => {
+    await MyEvents(req,res);
+});
+
+app.get('/api/mymaterial', authenticateToken, async (req, res) => {
+    await MyMaterials(req,res);
+});
+
+app.get('/api/event/current', authenticateToken, async (req, res) => {
+    await GetEvent(req,res);
+});
+
+app.get('/api/material/current', authenticateToken, async (req, res) => {
+    await GetMaterial(req,res);
+});
 
 app.post('/api/event', authenticateToken, async (req, res) => {
     await AddNewEvent(req,res);

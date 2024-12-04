@@ -152,7 +152,7 @@ const DeleteLearningMaterial = async (req, res) => {
         if (!result) {
             return res.status(404).json({ message: "Material not found" });
         }
-
+ 
         return res.status(200).json({ message: "Material deleted successfully" });
 
     } catch (error) {
@@ -161,4 +161,81 @@ const DeleteLearningMaterial = async (req, res) => {
     }
 }
 
-module.exports = [AddNewEvent, AddNewLearningMaterial, Display, UpdateEvent, DeleteEvent, UpdateLearningMaterial, DeleteLearningMaterial];
+//get
+const GetEvent = async (req, res) => {
+    try {
+        const eventBody = req.body;
+
+        const event = await Event.findOne(eventBody);
+
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        return res.status(200).json(event.id);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+}
+
+
+//get
+const GetMaterial = async (req, res) => {
+    try {
+        const learningMaterialBody = req.body;
+
+        const learningMaterial = await LearningMaterial.findOne(learningMaterialBody);
+
+        if (!learningMaterial) {
+            return res.status(404).json({ message: "Material not found" });
+        }
+
+        return res.status(200).json(learningMaterial.id);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+}
+
+//get
+const MyEvents = async (req, res) => {
+    try {
+        const { user } = req.body;
+
+        const events = await Event.find({ user: user });
+
+        if (events.length === 0) {
+            return res.status(404).json({ message: "No events found" });
+        }
+
+        return res.status(200).json(events);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+}
+
+//get
+const MyMaterials = async (req, res) => {
+    try {
+        const { user } = req.body;
+
+        const learningMaterial = await LearningMaterial.find({ user: user });
+
+        if (learningMaterial.length === 0) {
+            return res.status(404).json({ message: "No materials found" });
+        }
+
+        return res.status(200).json(learningMaterial);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+}
+
+module.exports = [AddNewEvent, AddNewLearningMaterial, Display, UpdateEvent, DeleteEvent, UpdateLearningMaterial, DeleteLearningMaterial, GetEvent, GetMaterial, MyEvents, MyMaterials];
