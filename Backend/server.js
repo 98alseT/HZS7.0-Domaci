@@ -16,7 +16,7 @@ app.get('/api/myevents', authenticateToken, async (req, res) => {
     await MyEvents(req,res);
 });
 
-app.get('/api/mymaterial', authenticateToken, async (req, res) => {
+app.get('/api/mymaterials', authenticateToken, async (req, res) => {
     await MyMaterials(req,res);
 });
 

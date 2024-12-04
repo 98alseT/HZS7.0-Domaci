@@ -58,26 +58,33 @@ const Display = async (req, res) => {
             const tags = req.body.tags;
             const types = req.body.type;
 
-            let models;
+            let query = {};
 
-            if(types && types.lenght > 0){
-                models = await Event.find({ tag: { $in: types } });
+            if (types && types.length > 0) {
+                query.type = { $in: types };
             }
 
             if (tags && tags.length > 0) {
-                models = models.filter(model => tags.some(tag => model.type.includes(tag)));
+                query.tag = { $in: tags };  // Assuming "type" is the field you want to filter by
             }
+
+            let models = await Event.find(query);
+
             return res.status(200).json(models);
         } 
         else if (req.body.typePost == 'learningMaterial') {
             const tags = req.body.tags;
-            if(tags && tags.lenght > 0){
-                let models = await LearningMaterial.find({ tag: { $in: tags } });
-                return res.status(200).json(models);
+
+            let query = {};
+
+            if (tags && tags.length > 0) {
+                query.tag = { $in: tags };
             }
-            let models = await LearningMaterial.find();
+
+            let models = await LearningMaterial.find(query);
             return res.status(200).json(models);
         }
+
         return res.status(400).json({ message: "Invalid typePost value" });
     } catch (error) {
         console.error(error);
@@ -85,10 +92,11 @@ const Display = async (req, res) => {
     }
 };
 
+
 //patch
 const UpdateEvent = async (req, res) => {
     try {
-        const eventId = req.body.id;
+        const eventId = req.body._id;
         const event = await Event.updateOne({ _id: eventId }, req.body);
         
         if (event.modifiedCount === 0) {
@@ -107,7 +115,7 @@ const UpdateEvent = async (req, res) => {
 //delete
 const DeleteEvent = async (req, res) => {
     try {
-        const eventId = req.body.id;
+        const eventId = req.body._id;
 
         const result = await Event.findByIdAndDelete(eventId);
         
@@ -126,7 +134,7 @@ const DeleteEvent = async (req, res) => {
 //patch
 const UpdateLearningMaterial = async (req, res) => {
     try {
-        const learningMaterialId = req.body.id;
+        const learningMaterialId = req.body._id;
         const learningMaterial = await LearningMaterial.updateOne({ _id: learningMaterialId }, req.body);
         
         if (learningMaterial.modifiedCount === 0) {
@@ -145,7 +153,7 @@ const UpdateLearningMaterial = async (req, res) => {
 //delete
 const DeleteLearningMaterial = async (req, res) => {
     try {
-        const learningMaterialId = req.body.id;
+        const learningMaterialId = req.body._id;
 
         const result = await LearningMaterial.findByIdAndDelete(learningMaterialId);
         

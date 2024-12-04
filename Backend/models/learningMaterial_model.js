@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-//Jos se ne koristi
 const learningMaterialSchema = new mongoose.Schema({
     user: { type: String, required: true},
     name: { type: String, required: true},
