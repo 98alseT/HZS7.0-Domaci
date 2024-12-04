@@ -37,6 +37,7 @@
 .logo {
     width: 40px;
     height: auto;
+    cursor: pointer;
 }
 
 .header-h1 {
