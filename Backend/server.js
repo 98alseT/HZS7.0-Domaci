@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const connectDB = require('./config/database');
 const [ClearTables, Write] = require('./functions/Dev');
@@ -9,7 +10,8 @@ const [SignIn, LogIn, LogOut, authenticateToken] = require('./functions/AuthFunc
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
- 
+app.use(cors());
+
 connectDB();
 
 app.get('/api/myevents', authenticateToken, async (req, res) => {
@@ -52,7 +54,7 @@ app.delete('/api/material', authenticateToken, async (req, res) => {
     await DeleteLearningMaterial(req,res);
 });
 
-app.get('/api/display', authenticateToken, async (req, res) => {
+app.post('/api/display', async (req, res) => {
     await Display(req,res);
 })
 

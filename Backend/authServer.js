@@ -8,13 +8,11 @@ const [SignIn, LogIn, LogOut, authenticateToken] = require('./functions/AuthFunc
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
+app.use(cors());
 
 connectDB();
 
-app.use(cors({
-    origin: 'http://localhost:5173',  // Allow your frontend's origin
-    credentials: true,                // Allow cookies to be sent
-}));  
+
 
 app.delete('/logout', async (req, res) => {
     await LogOut(req, res);

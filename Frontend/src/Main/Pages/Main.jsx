@@ -1,10 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from '../PagesCSS/Main.module.css';
 import Post from '../Objects/Post';
 
 const Main = ({ isSideSearchVisible }) => {
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/display', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            typePost: 'event',
+          }),
+        })
+        
+    
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Events:', data);
+          setEvents(data);  // Update your state with the fetched data
+        } else {
+          throw new Error('Failed to fetch events');
+        }
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        setError(error.message);  // Show error in UI
+      }    
+    };
+
+    fetchEvents();
+  }, []);  // Empty dependency array ensures this runs only once, when the component mounts
 
   return (
     <main>
@@ -34,20 +63,16 @@ const Main = ({ isSideSearchVisible }) => {
       </div>
 
       <div className={style['main-info']}>
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        {events.length > 0 ? (
+          events.map((event) => (
+            <Post 
+              key={event._id}  // Unique key for each post
+              info={event}
+            />
+          ))
+        ) : (
+          <p>No events found.</p>  // Display if there are no events
+        )}
       </div>
     </main>
   );

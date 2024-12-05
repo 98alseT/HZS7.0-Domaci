@@ -9,16 +9,16 @@ const AddNewEvent = async (req, res) =>{
         const data = req.body;
         let event = new Event(data);
 
-        const eventId = await Event.findOne({name: data.name});
+        const eventId = await Event.findOne({name: data.title});
         if (eventId) {
             return res.status(303).json({ 
                 message: "Event vec postoji. :(" 
             });
         }
-        
-        console.log("Createing event is successfull :D");
 
         event = await event.save();
+
+        console.log("Creating event is successfull :D");
 
         res.status(200).json({ 
             message: "Event napravljen. :)" 
@@ -51,7 +51,7 @@ const AddNewLearningMaterial = async (req, res) =>{
     }
 }
 
-//get
+//post
 const Display = async (req, res) => {
     try {
         if (req.body.typePost == 'event') {
@@ -65,7 +65,7 @@ const Display = async (req, res) => {
             }
 
             if (tags && tags.length > 0) {
-                query.tag = { $in: tags };  // Assuming "type" is the field you want to filter by
+                query.tag = { $in: tags };
             }
 
             let models = await Event.find(query);
