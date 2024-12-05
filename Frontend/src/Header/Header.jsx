@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const Header = ({ toggleSideSearch }) => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -21,6 +22,7 @@ const Header = ({ toggleSideSearch }) => {
           const data = await response.json();
           console.log('User authenticated:', data);
           setIsLoggedIn(true);
+          setUsername(data.username || ''); // Store the username if available
         } else {
           console.log('User not authenticated');
           setIsLoggedIn(false);
@@ -38,12 +40,13 @@ const Header = ({ toggleSideSearch }) => {
     try {
       const response = await fetch('http://localhost:4000/logout', {
         method: 'DELETE',
-        credentials: 'include', 
+        credentials: 'include',
       });
 
       if (response.ok) {
         console.log('Logged out successfully');
         setIsLoggedIn(false);
+        setUsername(''); // Clear the username on logout
         navigate('/');
         window.location.reload();
       } else {
@@ -63,12 +66,18 @@ const Header = ({ toggleSideSearch }) => {
             <div className={style['line']}></div>
             <div className={style['line']}></div>
           </div>
-          <img src="/path/to/logo.png" alt="logo" className={style.logo} onClick={() => navigate('/')}/>
+          <img
+            src="/path/to/logo.png"
+            alt="logo"
+            className={style.logo}
+            onClick={() => navigate('/')}
+          />
         </div>
         <h1 className={style['header-h1']}>EDUOBAVESTENJA</h1>
         <div className={style.buttons}>
           {isLoggedIn ? (
             <>
+              <p>{username}</p>
               <button className={style['sign-in']} onClick={handleLogOut}>Log Out</button>
             </>
           ) : (
