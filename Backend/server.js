@@ -34,7 +34,7 @@ app.post('/api/event', authenticateToken, async (req, res) => {
     await AddNewEvent(req,res);
 });
 
-app.patch('/api/event', authenticateToken, async (req, res) => {
+app.put('/api/event/:postId', authenticateToken, async (req, res) => {
     await UpdateEvent(req,res);
 });
 

@@ -26,11 +26,10 @@ const AddNewEvent = async (req, res) => {
             user: username
         });
 
-        const eventId = await Event.findOne({ name: data.title });
-
-        if (eventId) {
-            return res.status(303).json({
-                message: "Event already exists. :("
+        const overlappingEvent = await Event.findOne({ title: data.title });
+        if (overlappingEvent) {
+            return res.status(409).json({
+                message: "There is already an existing event with this title."
             });
         }
 
@@ -112,24 +111,69 @@ const Display = async (req, res) => {
 };
 
 
-//patch
+//put
 const UpdateEvent = async (req, res) => {
     try {
-        const eventId = req.body._id;
-        const event = await Event.updateOne({ _id: eventId }, req.body);
-        
-        if (event.modifiedCount === 0) {
-            return res.status(200).json({ message: "No changes were made" });
+        const token = req.cookies.token;
+
+        if (!token) {
+            return res.status(401).json({
+                message: "Unauthorized. No token provided."
+            });
         }
 
-        return res.status(200).json({ message: "Event updated successfully" });
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const username = decoded.username;
 
+        console.log('Decoded username:', username);
+
+        const { postId } = req.params;
+        const data = req.body;
+
+        if (!data.title || !data.description || !data.date || !data.time) {
+            return res.status(400).json({
+                message: "Invalid input. Required fields are missing."
+            });
+        }
+
+        const event = await Event.findOne({ _id: postId, user: username });
+        if (!event) {
+            return res.status(404).json({
+                message: "Event not found or you're not authorized to update this event."
+            });
+        }
+
+        const overlappingEvent = await Event.findOne({ title: data.title, _id: { $ne: postId } });
+        if (overlappingEvent) {
+            return res.status(409).json({
+                message: "There is already an existing event with this title."
+            });
+        }
+
+        const updatedEvent = await Event.findByIdAndUpdate(
+            postId,
+            { ...data },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedEvent) {
+            return res.status(400).json({
+                message: "Failed to update the event."
+            });
+        }
+
+        return res.status(200).json({ 
+            message: "Event updated successfully", 
+            event: updatedEvent 
+        });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "An error occurred", error: error.message });
+        console.error("Error updating event:", error.message);
+        return res.status(500).json({ 
+            message: "An internal server error occurred", 
+            error: error.message 
+        });
     }
-}
-
+};
 
 //delete
 const DeleteEvent = async (req, res) => {
