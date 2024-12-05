@@ -4,7 +4,7 @@ import Footer from './Footer/Footer';
 import Main from './Main/Pages/Main';
 import AddPost from './Main/Pages/AddPost';
 import EventDetails from './Main/Pages/EventDetails';
-import SignIn from './Main/Pages/SignIn';
+import SignUp from './Main/Pages/SignUp';
 import LogIn from './Main/Pages/LogIn';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ const App = () => {
         <Route path="/" element={<Main isSideSearchVisible={isSideSearchVisible} />}/>
         <Route path="/add-post" element={<AddPost />} />
         <Route path="/event-details" element={<EventDetails />}/>
-        <Route path="/sign-in" element={<SignIn />}/>
+        <Route path="/sign-up" element={<SignUp />}/>
         <Route path="/log-in" element={<LogIn />}/>
       </Routes>
       <Footer/>

@@ -6,15 +6,15 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const SignIn = async (req, res) => {
-    try{
+    try {
         const data = req.body;
         let user = new User(data);
 
-        const userId = await User.findOne({username: data.username});
+        const userId = await User.findOne({ username: data.username });
 
         if (userId != null) {
             return res.status(303).json({ 
-                message: "User vec postoji. :(" 
+                message: "User already exists :(" 
             });
         }
 
@@ -24,9 +24,9 @@ const SignIn = async (req, res) => {
 
         const accessToken = await makeAccessToken(user);
 
-        if(accessToken == null){
+        if (accessToken == null) {
             return res.status(501).json({
-                message: "Couldn't make an access token :("
+                message: "Couldn't generate an access token :("
             });
         }
 
@@ -38,35 +38,36 @@ const SignIn = async (req, res) => {
             maxAge: 86400000, // 24 hours
             path: '/',
         });
-              
 
         res.status(201).json({
             accessToken: accessToken,
         });
-        console.log("Token in res.json:", accessToken);
 
-    }catch(error){
+        console.log("Token in res.json:", accessToken);
+    } catch (error) {
+        console.error("Error in SignIn route:", error);
         res.status(500).json({
-            message: "Nisam uspeo SignIn :(",
+            message: "Failed to sign in :(",
             error: error.message
         });
     }
 };
 
+
 const LogIn = async (req, res) => {
     try{
         const data = req.body;
         
-        const currentUser = await User.findOne();
+        const currentUser = await User.findOne({username: data.username});
 
         if (currentUser == null) {
-            return res.status(303).json({ 
+            return res.status(404).json({ 
                 message: "Username ne postoji :(" 
             });
         }
 
         if(currentUser.password != data.password){
-            return res.status(303).json({ 
+            return res.status(401).json({ 
                 message: "Password je pogresan :(" 
             });
         }

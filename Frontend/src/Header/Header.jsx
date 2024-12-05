@@ -18,7 +18,7 @@ const Header = ({ toggleSideSearch }) => {
         </div>
         <h1 className={style['header-h1']}>EDUOBAVESTENJA</h1>
         <div className={style.buttons}>
-          <button className={style['sign-in']} onClick={() => navigate('/sign-in')}>Sign In</button>
+          <button className={style['sign-in']} onClick={() => navigate('/sign-up')}>Sign Up</button>
           <button className={style['log-in']} onClick={() => navigate('/log-in')}>Log In</button>
         </div>
       </div>

@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const connectDB = require('./config/database');
 const [SignIn, LogIn, LogOut, authenticateToken] = require('./functions/AuthFunctions');
@@ -10,15 +11,20 @@ app.use(express.json());
 
 connectDB();
 
+app.use(cors({
+    origin: 'http://localhost:5173',  // Allow your frontend's origin
+    credentials: true,                // Allow cookies to be sent
+}));  
+
 app.delete('/logout', async (req, res) => {
     await LogOut(req, res);
 });
 
-app.post('/signin', async (req, res) => {
+app.post('/sign-up', async (req, res) => {
     await SignIn(req, res);
 });
 
-app.post('/login', async (req, res) => {
+app.post('/log-in', async (req, res) => {
     await LogIn(req,res);
 });
 

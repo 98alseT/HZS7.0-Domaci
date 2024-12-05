@@ -5,3 +5,4 @@ npm i dotenv
 npm i mongoose
 npm i cors
 npm i cookie-parser
+npm i cors
