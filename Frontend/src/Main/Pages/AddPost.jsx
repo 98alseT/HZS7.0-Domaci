@@ -51,7 +51,7 @@ const AddPost = () => {
             throw new Error(errorData.message || 'Something went wrong');
           });
         }
-        return response.json(); 
+        return response.json();
       })
       .then(data => {
         console.log('Success:', data);
@@ -92,8 +92,9 @@ const AddPost = () => {
         </div>
 
         <div>
-          <label htmlFor="description">Description:</label>
+          <label className={style['description']}>Description:</label>
           <textarea
+            className={style['description']}
             id="description"
             name="description"
             value={formData.description}
