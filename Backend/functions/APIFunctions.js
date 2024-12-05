@@ -329,6 +329,12 @@ const getUsernameFromToken = (req, res, next) => {
 const Search = async (req, res) => {
     try {
         searchText = req.body.text;
+
+        if (searchText == null){
+            const events = await Event.find();
+            return res.status(200).json(events);
+        }
+
         const query = {
             $or: [
                 { title: { $regex: searchText, $options: 'i' } },     // Search in title
