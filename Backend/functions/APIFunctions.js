@@ -330,7 +330,10 @@ const Search = async (req, res) => {
     try {
         searchText = req.body.text;
 
+        console.log(searchText);
+
         if (searchText == null){
+            console.log("SEARCH TEXT IS NULL");
             const events = await Event.find();
             return res.status(200).json(events);
         }

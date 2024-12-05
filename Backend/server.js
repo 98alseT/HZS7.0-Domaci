@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const connectDB = require('./config/database');
 const [ClearTables, Write] = require('./functions/Dev');
-const [AddNewEvent, AddNewLearningMaterial, Display, UpdateEvent, DeleteEvent, UpdateLearningMaterial, DeleteLearningMaterial, GetEvent, GetMaterial, MyEvents, MyMaterials, getUsernameFromToken] = require('./functions/APIFunctions');
+const [AddNewEvent, AddNewLearningMaterial, Display, UpdateEvent, DeleteEvent, UpdateLearningMaterial, DeleteLearningMaterial, GetEvent, GetMaterial, MyEvents, MyMaterials, getUsernameFromToken, Search] = require('./functions/APIFunctions');
 const [SignIn, LogIn, LogOut, authenticateToken] = require('./functions/AuthFunctions');
 
 const app = express();
@@ -56,6 +56,10 @@ app.delete('/api/material', authenticateToken, async (req, res) => {
 
 app.post('/api/display', authenticateToken, async (req, res) => {
     await Display(req,res);
+})
+
+app.post('/api/search', authenticateToken, async (req, res) => {
+    await Search(req,res);
 })
 
 app.listen(3000, () => {

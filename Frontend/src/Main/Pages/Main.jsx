@@ -7,11 +7,38 @@ import Filters from '../Objects/Filters';
 const Main = ({ isSideSearchVisible }) => {
   const navigate = useNavigate();
 
-  const [results, setResults] = useState(null);
+  const [events, setEvents] = useState([]);
 
-  const handleSearchResults = (filteredResults) => {
-    setResults(filteredResults);
+  useEffect(() => {
+    const fetchAllEvents = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/display', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            typePost: 'event',
+          }),
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setEvents(data);
+        } else {
+          throw new Error('Failed to fetch all events');
+        }
+      } catch (error) {
+        console.error('Error fetching all events:', error);
+      }
+    };
+
+    fetchAllEvents();
+  }, []);
+
+  const handleSearch = (searchData) => {
+    setEvents(searchData);
   };
+
 
   return (
     <main>
@@ -19,7 +46,7 @@ const Main = ({ isSideSearchVisible }) => {
         className={`${style['side-search']} ${
           isSideSearchVisible ? style['side-search-visible'] : ''
         }`}>
-        <Filters onSearch={handleSearchResults} />
+        <Filters onSearch={handleSearch} />
         <div className={style['con-bt']}>
           <button className={`${style['dodaj-button']} ${style['dodaj-post']}`} onClick={() => navigate('/add-post')}>
             Dodaj post
@@ -28,7 +55,7 @@ const Main = ({ isSideSearchVisible }) => {
       </div>
 
       <div className={style['main-info']}>
-        <PostList results={results} />
+        <PostList events={events} />
       </div>
     </main>
   );
