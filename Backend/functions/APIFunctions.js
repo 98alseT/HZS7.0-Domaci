@@ -18,6 +18,8 @@ const AddNewEvent = async (req, res) => {
         const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         const username = decoded.username;
 
+        console.log('Decoded username:', username);
+
         const data = req.body;
         let event = new Event({
             ...data,
@@ -31,7 +33,7 @@ const AddNewEvent = async (req, res) => {
                 message: "Event already exists. :("
             });
         }
-        
+
         event = await event.save();
 
         console.log("Creating event was successful :D");

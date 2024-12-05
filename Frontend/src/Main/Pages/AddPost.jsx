@@ -11,8 +11,8 @@ const AddPost = () => {
     location: '',
     date: '',
     time: '',
-    type: '',
-    tag: ''
+    type: 'Predavanje',
+    tag: 'Statistika'
   });
 
   // Handle form input changes
@@ -48,14 +48,25 @@ const AddPost = () => {
       body: JSON.stringify(postData),  // Convert the form data into JSON
       credentials: 'include',  // This will send cookies (authentication tokens) along with the request
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          // If response status is not OK (200-299), throw an error
+          return response.json().then(errorData => {
+            throw new Error(errorData.message || 'Something went wrong');
+          });
+        }
+        return response.json();  // Parse JSON if response is OK
+      })
       .then(data => {
         console.log('Success:', data);
-        navigate('/');
+        navigate('/');  // Only navigate if the request was successful
       })
       .catch(error => {
         console.error('Error:', error);
+        // Optionally, show an error message to the user
+        alert(`Error: ${error.message}`);
       });
+    
   };
 
   return (
@@ -157,9 +168,9 @@ const AddPost = () => {
             onChange={handleChange}
             required
           >
-            <option value="Statisika">Statisika</option>
+            <option value="Statistika">Statistika</option>
             <option value="Numerika">Numerika</option>
-            <option value="Vestacka intelegencija">Vestacka intelegencija</option>
+            <option value="Vestacka inteligencija">Vestacka inteligencija</option>
             <option value="Back-end">Back-end</option>
             <option value="Front-end">Front-end</option>
             <option value="Primenjena Fizika i Elektrotehnika">Primenjena Fizika i Elektrotehnika</option>
