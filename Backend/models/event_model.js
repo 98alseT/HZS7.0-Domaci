@@ -10,7 +10,8 @@ const eventSchema = new mongoose.Schema({
     type: { type: String, enum: ['Predavanje', 'Izlozba', 'Dan otvorenih vrata'], required: true},
     tag: { type: String, enum: ['Statisika', 'Numerika', 'Vestacka intelegencija', 'Back-end', 'Front-end', 'Primenjena Fizika i Elektrotehnika'], require: true },
     price : { type: Number, default: 0, required: false },
-    link: { type: String, required: false}
+    link: { type: String, required: false},
+    png: {type: Image, requited: false}
 });
 
 const Event = mongoose.model('event', eventSchema);
