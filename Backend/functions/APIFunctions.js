@@ -281,6 +281,27 @@ const getUsernameFromToken = (req, res, next) => {
       return res.status(401).json({ message: "Invalid token." });
     }
 };
-  
 
-module.exports = [AddNewEvent, AddNewLearningMaterial, Display, UpdateEvent, DeleteEvent, UpdateLearningMaterial, DeleteLearningMaterial, GetEvent, GetMaterial, MyEvents, MyMaterials, getUsernameFromToken];
+const Search = async (req, res) => {
+    try {
+        searchText = req.body.text;
+        const query = {
+            $or: [
+                { title: { $regex: searchText, $options: 'i' } },     // Search in title
+                { location: { $regex: searchText, $options: 'i' } },  // Search in location
+                { type: { $regex: searchText, $options: 'i' } },      // Search in type
+                { tag: { $regex: searchText, $options: 'i' } }        // Search in tag
+            ]
+        };
+
+        // Query the database
+        const events = await Event.find(query);
+
+        res.status(200).json(events);
+    } catch (error) {
+        console.error('Error searching events:', error);
+        res.status(400).json(error);
+    }
+};
+
+module.exports = [AddNewEvent, AddNewLearningMaterial, Display, UpdateEvent, DeleteEvent, UpdateLearningMaterial, DeleteLearningMaterial, GetEvent, GetMaterial, MyEvents, MyMaterials, getUsernameFromToken, Search];
