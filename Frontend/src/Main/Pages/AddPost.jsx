@@ -11,8 +11,8 @@ const AddPost = () => {
     location: '',
     date: '',
     time: '',
-    type: 'Predavanje',
-    tag: 'Vestacka intelegencija'
+    type: '',
+    tag: ''
   });
 
   // Handle form input changes
