@@ -1,23 +1,27 @@
-import React from 'react'
-import style from '../PagesCSS/Main.module.css'
-import eventImg from '../../assets/testEvent.jpg'
-import { useNavigate } from 'react-router-dom'
+import React from 'react';
+import style from '../PagesCSS/Main.module.css';
+import { useNavigate } from 'react-router-dom';
 
-const Post = () => {
+const Post = ({info}) => {
   const navigate = useNavigate();
 
   return (
     <div className={style['post']}>
-        <img src={eventImg} alt="event-poster" className={style['event-poster']} onClick={() => navigate('/event-details')}/>
-        <div className={style['sep']}>
-            <div className={style['desc']}>
-                <h1 className={style['event-name']}>Test Event</h1>
-                <p className={style['event-description']}>Deskripcija Test Eventa</p>
-            </div>
-            <button className={style['join-event']}>Join</button>
+      <img
+        src={info.eventImage}
+        alt="event-poster"
+        className={style['event-poster']}
+        onClick={() => navigate('/event-details')}
+      />
+      <div className={style['sep']}>
+        <div className={style['desc']}>
+          <h1 className={style['event-name']}>{info.title}</h1>
+          <p className={style['event-description']}>{info.description}</p>
         </div>
+        <button className={style['join-event']}>Join</button>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Post
+export default Post;
