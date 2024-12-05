@@ -3,7 +3,11 @@ import style from './Footer.module.css';
 
 const Footer = () => {
   return (
-    <footer>Footer</footer>
+    <footer>
+      <div className={style['footer-bg']}>
+        <h1>TEAM TLE</h1>
+      </div>
+    </footer>
   );
 };
 
