@@ -7,14 +7,19 @@ const Post = ({ info, username }) => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/event/${info._id}`, {
+      const response = await fetch(`http://localhost:3000/api/event`, {
         method: 'DELETE',
-        credentials: 'include',  // Send cookies with the request
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: info._id  
+        }),  
+        credentials: 'include',
       });
 
       if (response.ok) {
-        alert('Event deleted successfully');
-        // Optionally, you can refresh the list of events or remove the deleted event from the state
+        window.location.reload();
       } else {
         alert('Failed to delete the event');
       }
@@ -38,7 +43,7 @@ const Post = ({ info, username }) => {
         </div>
         <button className={style['join-event']}>Join</button>
         {info.user === username && (  // Check if the post's user matches the logged-in user
-          <button onClick={handleDelete} className={style['delete-event']}>
+          <button onClick={handleDelete} className={style['join-event']}>
             Delete
           </button>
         )}

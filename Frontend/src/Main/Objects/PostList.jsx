@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import style from '../PagesCSS/Main.module.css';
 import Post from '../Objects/Post';
 
 const PostList = () => {

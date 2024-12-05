@@ -134,7 +134,9 @@ const UpdateEvent = async (req, res) => {
 //delete
 const DeleteEvent = async (req, res) => {
     try {
-        const eventId = req.body._id;
+        const eventId = req.body.id;
+
+        console.log(eventId);
 
         const result = await Event.findByIdAndDelete(eventId);
         
