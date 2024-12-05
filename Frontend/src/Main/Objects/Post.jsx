@@ -39,12 +39,6 @@ const Post = ({ info, username }) => {
 
   return (
     <div className={style['post']}>
-      <img
-        src={info.eventImage || img}
-        alt="event-poster"
-        className={style['event-poster']}
-        onClick={handlePostClick}
-      />
       <div className={style['sep']}>
         <div className={style['desc']} onClick={handlePostClick}>
           <h1 className={style['event-name']}>{info.title}</h1>
