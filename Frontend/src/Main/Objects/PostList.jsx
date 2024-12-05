@@ -6,17 +6,16 @@ const PostList = () => {
   const [username, setUsername] = useState('');
 
   useEffect(() => {
-    // Fetch the logged-in username from the backend
     const fetchUsername = async () => {
       try {
         const response = await fetch('http://localhost:3000/api/get-username', {
           method: 'GET',
-          credentials: 'include',  // Send cookies with the request
+          credentials: 'include',
         });
 
         if (response.ok) {
           const data = await response.json();
-          setUsername(data.username);  // Set the username in state
+          setUsername(data.username);
         } else {
           throw new Error('Failed to fetch username');
         }
@@ -25,7 +24,6 @@ const PostList = () => {
       }
     };
 
-    // Fetch the events
     const fetchEvents = async () => {
       try {
         const response = await fetch('http://localhost:3000/api/display', {
@@ -34,12 +32,12 @@ const PostList = () => {
           body: JSON.stringify({
             typePost: 'event',
           }),
-          credentials: 'include',  // Include cookies with the request
+          credentials: 'include',
         });
 
         if (response.ok) {
           const data = await response.json();
-          setEvents(data);  // Update state with fetched events
+          setEvents(data); 
         } else {
           throw new Error('Failed to fetch events');
         }
@@ -48,8 +46,8 @@ const PostList = () => {
       }
     };
 
-    fetchUsername();  // Fetch username
-    fetchEvents();    // Fetch events
+    fetchUsername();
+    fetchEvents();
   }, []);
 
   return (
@@ -59,7 +57,7 @@ const PostList = () => {
           <Post
             key={event._id}
             info={event}
-            username={username}  // Pass username to Post component
+            username={username}
           />
         ))
       ) : (
