@@ -5,8 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const EventDetails = () => {
   const navigate = useNavigate();
-  const { postId } = useParams(); // Extract postId from URL
-  const [post, setPost] = useState(null); // State for post data
+  const { postId } = useParams();
+  const [post, setPost] = useState(null);
 
   useEffect(() => {
     const fetchPostData = async () => {
@@ -16,12 +16,12 @@ const EventDetails = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          credentials: 'include', // Include cookies for authentication
+          credentials: 'include',
         });
 
         if (response.ok) {
           const data = await response.json();
-          setPost(data); // Store post data in state
+          setPost(data);
         } else {
           console.error('Failed to fetch post data');
         }
@@ -33,7 +33,6 @@ const EventDetails = () => {
     fetchPostData();
   }, [postId]);
 
-  // Display loading message until data is fetched
   if (!post) {
     return <p>Loading...</p>;
   }
@@ -56,7 +55,7 @@ const EventDetails = () => {
       <div className={style['right-section']}>
         <div className={style['imageContainer']}>
           <img
-            src={post.eventImage || 'placeholder.jpg'} // Use post image or a fallback
+            src={post.eventImage || img}
             alt="event-poster"
             className={style['image']}
           />

@@ -1,4 +1,5 @@
 import React from 'react';
+import img from '../../assets/testEvent.jpg';
 import style from '../PagesCSS/Main.module.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -35,7 +36,7 @@ const Post = ({ info, username }) => {
   return (
     <div className={style['post']} onClick={handlePostClick}>
       <img
-        src={info.eventImage}
+        src={info.eventImage || img}
         alt="event-poster"
         className={style['event-poster']}
         onClick={handlePostClick}
