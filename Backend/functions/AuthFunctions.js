@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 
-const SignIn = async (req, res) => {
+const SignUp = async (req, res) => {
     try {
         const data = req.body;
         let user = new User(data);
@@ -90,7 +90,7 @@ const LogIn = async (req, res) => {
         });        
 
         res.status(201).json({
-            accesToken: accessToken,
+            accessToken: accessToken,
         });
     } catch(error){
         res.status(500).json({
@@ -143,4 +143,4 @@ const makeAccessToken = async (currentUser) => {
     }
 };
 
-module.exports = [SignIn, LogIn, LogOut, authenticateToken];
+module.exports = [SignUp, LogIn, LogOut, authenticateToken];

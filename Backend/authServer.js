@@ -3,12 +3,12 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 const connectDB = require('./config/database');
-const [SignIn, LogIn, LogOut, authenticateToken] = require('./functions/AuthFunctions');
+const [SignUp, LogIn, LogOut, authenticateToken] = require('./functions/AuthFunctions');
 
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
+app.use(cors({origin: 'http://localhost:5173', credentials: true}));
 
 connectDB();
 
@@ -19,7 +19,7 @@ app.delete('/logout', async (req, res) => {
 });
 
 app.post('/sign-up', async (req, res) => {
-    await SignIn(req, res);
+    await SignUp(req, res);
 });
 
 app.post('/log-in', async (req, res) => {

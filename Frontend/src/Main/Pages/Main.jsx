@@ -16,9 +16,9 @@ const Main = ({ isSideSearchVisible }) => {
           body: JSON.stringify({
             typePost: 'event',
           }),
+          credentials: 'include',
         })
         
-    
         if (response.ok) {
           const data = await response.json();
           console.log('Events:', data);

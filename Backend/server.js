@@ -10,7 +10,7 @@ const [SignIn, LogIn, LogOut, authenticateToken] = require('./functions/AuthFunc
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors());
+app.use(cors({origin: 'http://localhost:5173', credentials: true}));
 
 connectDB();
 
@@ -54,7 +54,7 @@ app.delete('/api/material', authenticateToken, async (req, res) => {
     await DeleteLearningMaterial(req,res);
 });
 
-app.post('/api/display', async (req, res) => {
+app.post('/api/display', authenticateToken, async (req, res) => {
     await Display(req,res);
 })
 
