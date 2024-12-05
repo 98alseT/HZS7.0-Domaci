@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const connectDB = require('./config/database');
 const [ClearTables, Write] = require('./functions/Dev');
-const [AddNewEvent, AddNewLearningMaterial, Display, UpdateEvent, DeleteEvent, UpdateLearningMaterial, DeleteLearningMaterial, GetEvent, GetMaterial, MyEvents, MyMaterials] = require('./functions/APIFunctions');
+const [AddNewEvent, AddNewLearningMaterial, Display, UpdateEvent, DeleteEvent, UpdateLearningMaterial, DeleteLearningMaterial, GetEvent, GetMaterial, MyEvents, MyMaterials, getUsernameFromToken] = require('./functions/APIFunctions');
 const [SignIn, LogIn, LogOut, authenticateToken] = require('./functions/AuthFunctions');
 
 const app = express();
@@ -61,6 +61,11 @@ app.post('/api/display', authenticateToken, async (req, res) => {
 app.listen(3000, () => {
     console.log('Server je pokrenut na portu 3000');
 });
+
+app.get('/api/get-username', getUsernameFromToken, (req, res) => {
+    res.json({ username: req.username });
+});
+  
 
 app.delete('/dev/brisi', ClearTables);
 app.get('/dev/ispisi', async (req, res) => {

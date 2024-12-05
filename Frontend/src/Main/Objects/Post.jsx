@@ -2,8 +2,26 @@ import React from 'react';
 import style from '../PagesCSS/Main.module.css';
 import { useNavigate } from 'react-router-dom';
 
-const Post = ({info}) => {
+const Post = ({ info, username }) => {
   const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/event/${info._id}`, {
+        method: 'DELETE',
+        credentials: 'include',  // Send cookies with the request
+      });
+
+      if (response.ok) {
+        alert('Event deleted successfully');
+        // Optionally, you can refresh the list of events or remove the deleted event from the state
+      } else {
+        alert('Failed to delete the event');
+      }
+    } catch (error) {
+      console.error('Error deleting event:', error);
+    }
+  };
 
   return (
     <div className={style['post']}>
@@ -19,6 +37,11 @@ const Post = ({info}) => {
           <p className={style['event-description']}>{info.description}</p>
         </div>
         <button className={style['join-event']}>Join</button>
+        {info.user === username && (  // Check if the post's user matches the logged-in user
+          <button onClick={handleDelete} className={style['delete-event']}>
+            Delete
+          </button>
+        )}
       </div>
     </div>
   );

@@ -265,4 +265,22 @@ const MyMaterials = async (req, res) => {
     }
 }
 
-module.exports = [AddNewEvent, AddNewLearningMaterial, Display, UpdateEvent, DeleteEvent, UpdateLearningMaterial, DeleteLearningMaterial, GetEvent, GetMaterial, MyEvents, MyMaterials];
+const getUsernameFromToken = (req, res, next) => {
+    const token = req.cookies.token;  // Assuming token is stored in cookies
+  
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized. No token provided." });
+    }
+  
+    try {
+      // Decode the token to get the username
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      req.username = decoded.username;  // Attach the username to the request object
+      next();  // Proceed to the next middleware or route handler
+    } catch (error) {
+      return res.status(401).json({ message: "Invalid token." });
+    }
+};
+  
+
+module.exports = [AddNewEvent, AddNewLearningMaterial, Display, UpdateEvent, DeleteEvent, UpdateLearningMaterial, DeleteLearningMaterial, GetEvent, GetMaterial, MyEvents, MyMaterials, getUsernameFromToken];
