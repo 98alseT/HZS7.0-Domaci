@@ -48,14 +48,15 @@ const EventDetails = () => {
           <button className={style['backButton']} onClick={() => navigate('/')}>
             Nazad
           </button>
-          <button className={style['includeButton']}>Uključi</button>
         </div>
       </div>
 
       <div className={style['right-section']}>
         <div className={style['details']}>
           <div className={style['locationAndTime']}>
+            <p>Lokacija :</p>
             <span className={style['location']}>{post.location}</span>
+            <p>Vreme :</p>
             <span className={style['time']}>
               {post.date} {post.time}
             </span>

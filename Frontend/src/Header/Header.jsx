@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import style from './Header.module.css';
 import { useNavigate } from 'react-router-dom';
+import img from './TLE.png'
 
 const Header = ({ toggleSideSearch }) => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Header = ({ toggleSideSearch }) => {
           const data = await response.json();
           console.log('User authenticated:', data);
           setIsLoggedIn(true);
-          setUsername(data.username || ''); // Store the username if available
+          setUsername(data.username || '');
         } else {
           console.log('User not authenticated');
           setIsLoggedIn(false);
@@ -46,7 +47,7 @@ const Header = ({ toggleSideSearch }) => {
       if (response.ok) {
         console.log('Logged out successfully');
         setIsLoggedIn(false);
-        setUsername(''); // Clear the username on logout
+        setUsername('');
         navigate('/');
         window.location.reload();
       } else {
@@ -67,7 +68,7 @@ const Header = ({ toggleSideSearch }) => {
             <div className={style['line']}></div>
           </div>
           <img
-            src="/path/to/logo.png"
+            src={img}
             alt="logo"
             className={style.logo}
             onClick={() => navigate('/')}

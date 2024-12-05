@@ -32,7 +32,6 @@ const EventUpdate = () => {
           const data = await response.json();
           setPost(data);
 
-          // Populate form data with fetched post data
           setFormData({
             title: data.title,
             name: data.name,
@@ -187,7 +186,7 @@ const EventUpdate = () => {
             <option value="Primenjena Fizika i Elektrotehnika">Primenjena Fizika i Elektrotehnika</option>
           </select>
         </div>
-        <button type="submit">Update Post</button>
+        <button type="submit" className={style['Update-btn']}>Update Post</button>
       </form>
     </div>
   );
