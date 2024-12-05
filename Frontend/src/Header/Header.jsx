@@ -1,9 +1,58 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './Header.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const Header = ({ toggleSideSearch }) => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/get-username', {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('User authenticated:', data);
+          setIsLoggedIn(true);
+        } else {
+          console.log('User not authenticated');
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.error('Error checking authentication:', error);
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  const handleLogOut = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/logout', {
+        method: 'DELETE',
+        credentials: 'include', 
+      });
+
+      if (response.ok) {
+        console.log('Logged out successfully');
+        setIsLoggedIn(false);
+        navigate('/');
+        window.location.reload();
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
 
   return (
     <header>
@@ -18,8 +67,16 @@ const Header = ({ toggleSideSearch }) => {
         </div>
         <h1 className={style['header-h1']}>EDUOBAVESTENJA</h1>
         <div className={style.buttons}>
-          <button className={style['sign-in']} onClick={() => navigate('/sign-up')}>Sign Up</button>
-          <button className={style['log-in']} onClick={() => navigate('/log-in')}>Log In</button>
+          {isLoggedIn ? (
+            <>
+              <button className={style['sign-in']} onClick={handleLogOut}>Log Out</button>
+            </>
+          ) : (
+            <>
+              <button className={style['sign-in']} onClick={() => navigate('/sign-up')}>Sign Up</button>
+              <button className={style['log-in']} onClick={() => navigate('/log-in')}>Log In</button>
+            </>
+          )}
         </div>
       </div>
     </header>

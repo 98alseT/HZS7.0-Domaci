@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import Main from './Main/Pages/Main';
-import AddPost from './Main/Pages/AddPost';
+import AddPost from './Main/Pages/AddPost.jsx';
 import EventDetails from './Main/Pages/EventDetails';
 import EventUpdate from './Main/Pages/EventUpdate';
 import SignUp from './Main/Pages/SignUp';
-import LogIn from './Main/Pages/LogIn';
+import LogIn from './Main/Pages/LogIn.jsx';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const App = () => {

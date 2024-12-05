@@ -43,6 +43,7 @@ const SignUp = () => {
         const data = await response.json();
         console.log('Sign-Up successful:', data);
         navigate('/');
+        window.location.reload();
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Sign-Up failed');

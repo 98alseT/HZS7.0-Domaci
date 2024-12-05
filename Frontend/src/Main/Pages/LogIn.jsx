@@ -39,6 +39,7 @@ const LogIn = () => {
         const data = await response.json();
         console.log('Log-in successful:', data);
         navigate('/');
+        window.location.reload();
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Log-in failed');
