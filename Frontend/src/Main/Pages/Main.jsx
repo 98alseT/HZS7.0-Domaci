@@ -9,6 +9,7 @@ const Main = ({ isSideSearchVisible }) => {
 
   const [events, setEvents] = useState([]);
 
+
   useEffect(() => {
     const fetchAllEvents = async () => {
       try {
