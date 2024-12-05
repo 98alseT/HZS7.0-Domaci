@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import style from '../PagesCSS/AddPost.Module.css';
 import { useNavigate } from 'react-router-dom';
+import { validateForm } from './AddPost';
 
 const AddPost = () => {
   const navigate = useNavigate();
@@ -12,19 +13,26 @@ const AddPost = () => {
     date: '',
     time: '',
     type: 'Predavanje',
-    tag: 'Statistika'
+    tag: 'Statistika',
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
 
     const postData = {
       title: formData.title,
@@ -34,7 +42,7 @@ const AddPost = () => {
       date: formData.date,
       time: formData.time,
       type: formData.type,
-      tag: formData.tag
+      tag: formData.tag,
     };
 
     fetch('http://localhost:3000/api/event', {
@@ -45,23 +53,22 @@ const AddPost = () => {
       body: JSON.stringify(postData),
       credentials: 'include',
     })
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
-          return response.json().then(errorData => {
+          return response.json().then((errorData) => {
             throw new Error(errorData.message || 'Something went wrong');
           });
         }
         return response.json();
       })
-      .then(data => {
+      .then((data) => {
         console.log('Success:', data);
         navigate('/');
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error:', error);
         alert(`Error: ${error.message}`);
       });
-    
   };
 
   return (
@@ -75,8 +82,8 @@ const AddPost = () => {
             name="title"
             value={formData.title}
             onChange={handleChange}
-            required
           />
+          {errors.title && <p className={style['error']}>{errors.title}</p>}
         </div>
 
         <div>
@@ -87,8 +94,8 @@ const AddPost = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            required
           />
+          {errors.name && <p className={style['error']}>{errors.name}</p>}
         </div>
 
         <div>
@@ -99,8 +106,8 @@ const AddPost = () => {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            required
           />
+          {errors.description && <p className={style['error']}>{errors.description}</p>}
         </div>
 
         <div>
@@ -111,8 +118,8 @@ const AddPost = () => {
             name="location"
             value={formData.location}
             onChange={handleChange}
-            required
           />
+          {errors.location && <p className={style['error']}>{errors.location}</p>}
         </div>
 
         <div>
@@ -123,8 +130,8 @@ const AddPost = () => {
             name="date"
             value={formData.date}
             onChange={handleChange}
-            required
           />
+          {errors.date && <p className={style['error']}>{errors.date}</p>}
         </div>
 
         <div>
@@ -135,8 +142,8 @@ const AddPost = () => {
             name="time"
             value={formData.time}
             onChange={handleChange}
-            required
           />
+          {errors.time && <p className={style['error']}>{errors.time}</p>}
         </div>
 
         <div>
@@ -146,12 +153,12 @@ const AddPost = () => {
             name="type"
             value={formData.type}
             onChange={handleChange}
-            required
           >
             <option value="Predavanje">Predavanje</option>
             <option value="Izlozba">Izlozba</option>
             <option value="Dan otvorenih vrata">Dan otvorenih vrata</option>
           </select>
+          {errors.type && <p className={style['error']}>{errors.type}</p>}
         </div>
 
         <div>
@@ -161,7 +168,6 @@ const AddPost = () => {
             name="tag"
             value={formData.tag}
             onChange={handleChange}
-            required
           >
             <option value="Statistika">Statistika</option>
             <option value="Numerika">Numerika</option>
@@ -170,6 +176,7 @@ const AddPost = () => {
             <option value="Front-end">Front-end</option>
             <option value="Primenjena Fizika i Elektrotehnika">Primenjena Fizika i Elektrotehnika</option>
           </select>
+          {errors.tag && <p className={style['error']}>{errors.tag}</p>}
         </div>
 
         <button type="submit">Submit</button>
