@@ -1,81 +1,153 @@
+button{
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+}
+
+button:hover{
+  background-color: white;
+  color: black;
+  transition: 0.4s;
+}
+
 .main {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
+  margin-top: 60px;
+}
+
+.left-section {
+  text-align: center;
+  width: 50%;
+  height: calc(100vh - 60px);
+  background-color: red;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.right-section{
+  padding: 16px;
+  width: 50%;
+  height: calc(100vh - 60px);
+  background-color: aqua;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.left-section h1{
+  text-align: center;
+}
+
+.left-section .description{
+  padding: 4px;
+  text-align: left;
+  background-color: white;
+  word-wrap: break-word;
+  height: auto;
+  width: 80%;
+  border-radius: 10px;
+  border: 2px solid black;
+}
+
+.left-section .buttons{
+  width: 100%;
+  flex-direction: row;
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
+.left-section .backButton{
+  width: 33%;
+  margin-right: 30px;
+  height: 40px;
+}
+
+.left-section .includeButton{
+  width: 33%;
+  height: 40px;
+  margin-left: 30px;
+}
+
+.right-section .imageContainer{
+  z-index: 10;
+  width: 95%;
+}
+
+.right-section .image{
+  width: 100%;
+  height: auto;
+}
+
+.details{
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  flex-direction: row;
+}
+
+.locationAndTime{
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
+.location{
+  border-radius: 5px;
+  border: 2px solid black;
+  font-size: 24px;
+  display: flex;
+  background-color: white;
+  width: 180px;
+  height: 50px;
+  margin-bottom: 80px;
+  justify-content: center;
+  align-items: center;
+}
+
+.time{
+  border-radius: 5px;
+  border: 2px solid black;
+  font-size: 24px;
+  display: flex;
+  background-color: white;
+  margin-top: 80px;
+  width: 180px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+}
+
+iframe{
+  border-radius: 10px;
+}
+
+@media (max-width:1850px){
+  .details{
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .locationAndTime{
+    flex-direction: row;
   }
   
-  .left-section {
-    width: 40vw;
-    display: inline-block;
+  .location{
+    width: 90px;
+    margin: 0;
   }
   
-  .description {
-    height: 28vw;
-    display: block;
-    word-wrap: break-word;
-    overflow-y: scroll;
+  .time{
+    width: 90px;
+    margin: 0;
   }
   
-  .buttons {
-    width: 40vw;
-    height: 5vw;
-    display: flex;
-    margin-top: 6px;
+  iframe{
+    
   }
-  
-  .backButton, .includeButton {
-    height: 100%;
-  }
-  
-  .backButton {
-    width: 30%;
-  }
-  
-  .includeButton {
-    width: 50%;
-    margin-left: auto;
-  }
-  
-  .rightSection {
-    width: 60vw;
-  }
-  
-  .imageContainer {
-    display: flex;
-    justify-content: center;
-    margin-top: 1%;
-    margin-bottom: 2%;
-  }
-  
-  .image {
-    width: auto;
-    height: 58vh;
-  }
-  
-  .details {
-    display: flex;
-    width: 100%;
-  }
-  
-  .locationAndTime {
-    margin-left: 5%;
-    margin-top: 2%;
-    width: 30%;
-  }
-  
-  .location, .time {
-    display: block;
-    border: 1px solid black;
-    padding: 15px;
-  }
-  
-  .location {
-    margin-bottom: 10px;
-  }
-  
-  .secondaryImage {
-    width: auto;
-    height: 30vh;
-    margin-left: auto;
-    margin-right: 5%;
-  }
-  
+}
