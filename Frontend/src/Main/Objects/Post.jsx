@@ -1,6 +1,6 @@
 import React from 'react'
-import style from './Main.module.css'
-import eventImg from './testEvent.jpg'
+import style from '../PagesCSS/Main.module.css'
+import eventImg from '../../assets/testEvent.jpg'
 import { useNavigate } from 'react-router-dom'
 
 const Post = () => {

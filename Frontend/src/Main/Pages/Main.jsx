@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import style from './Main.module.css';
-import Post from './Post';
+import style from '../PagesCSS/Main.module.css';
+import Post from '../Objects/Post';
 
 const Main = ({ isSideSearchVisible }) => {
   const navigate = useNavigate();

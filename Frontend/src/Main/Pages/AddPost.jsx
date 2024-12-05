@@ -1,6 +1,6 @@
 import React from 'react';
-import style from './AddPost.Module.css';
-import img from './testEvent.jpg';
+import style from '../PagesCSS/AddPost.Module.css';
+import img from '../../assets/testEvent.jpg';
 
 const AddPost = () => {
   return (

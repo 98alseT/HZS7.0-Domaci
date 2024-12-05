@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Header from './Header/Header';
-import Main from './Main/Main';
-import AddPost from './Main/AddPost';
-import EventDetails from './Main/EventDetails';
-import SignIn from './Pages/SignIn';
-import LogIn from './Pages/LogIn';
+import Footer from './Footer/Footer';
+import Main from './Main/Pages/Main';
+import AddPost from './Main/Pages/AddPost';
+import EventDetails from './Main/Pages/EventDetails';
+import SignIn from './Main/Pages/SignIn';
+import LogIn from './Main/Pages/LogIn';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/sign-in" element={<SignIn />}/>
         <Route path="/log-in" element={<LogIn />}/>
       </Routes>
+      <Footer/>
     </Router>
   );
 };
