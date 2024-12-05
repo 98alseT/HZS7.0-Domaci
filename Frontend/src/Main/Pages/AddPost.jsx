@@ -179,7 +179,7 @@ const AddPost = () => {
           {errors.tag && <p className={style['error']}>{errors.tag}</p>}
         </div>
 
-        <button type="submit">Submit</button>
+        <button className={style['button']} type="submit">Submit</button>
       </form>
     </div>
   );

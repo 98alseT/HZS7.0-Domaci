@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from '../PagesCSS/Main.module.css';
 import PostList from '../Objects/PostList';
+import Post from '../Objects/Post';
 
 const Main = ({ isSideSearchVisible }) => {
   const navigate = useNavigate();
@@ -29,7 +30,6 @@ const Main = ({ isSideSearchVisible }) => {
           <button className={`${style['dodaj-button']} ${style['dodaj-post']}`} onClick={() => navigate('/add-post')}>
             Dodaj post
           </button>
-          <button className={style['dodaj-button']}>Dodaj tag</button>
         </div>
       </div>
 
