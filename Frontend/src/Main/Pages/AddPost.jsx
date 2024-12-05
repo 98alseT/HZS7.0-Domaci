@@ -1,44 +1,173 @@
-import React from 'react';
+import React, { useState } from 'react';
 import style from '../PagesCSS/AddPost.Module.css';
-import img from '../../assets/testEvent.jpg';
 import { useNavigate } from 'react-router-dom';
 
 const AddPost = () => {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    title: '',
+    name: '',
+    description: '',
+    location: '',
+    date: '',
+    time: '',
+    type: 'Predavanje',
+    tag: 'Vestacka intelegencija'
+  });
+
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  // Handle form submission and POST request to the server
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const postData = {
+      title: formData.title,
+      name: formData.name,
+      description: formData.description,
+      location: formData.location,
+      date: formData.date,
+      time: formData.time,
+      type: formData.type,
+      tag: formData.tag
+    };
+
+    // Send POST request to the server with credentials included
+    fetch('http://localhost:3000/api/event', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',  // Send data as JSON
+      },
+      body: JSON.stringify(postData),  // Convert the form data into JSON
+      credentials: 'include',  // This will send cookies (authentication tokens) along with the request
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        navigate('/');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
 
   return (
     <div className={style['main']}>
-      <div className={style['left-section']}>
-        <h1>Naziv događaja</h1>
-        <div className={style['description']}>
-          <p>Opis događaja.</p>
+      <form onSubmit={handleSubmit}>
+        {/* Your input fields here */}
+        <div>
+          <label htmlFor="title">Title:</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            required
+          />
         </div>
-        <div className={style['buttons']}>
-          <button className={style['backButton']} onClick={() => navigate('/')}>Nazad</button>
-          <button className={style['includeButton']}>Uključi</button>
-        </div>
-      </div>
 
-      <div className={style['right-section']}>
-        <div className={style['imageContainer']}>
-          <img src={img} alt="event-photo" className={style['image']} />
+        <div>
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
         </div>
-        <div className={style['details']}>
-          <div className={style['locationAndTime']}>
-            <span className={style['location']}>Lokacija</span>
-            <span className={style['time']}>Vreme</span>
-          </div>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2830.907988175154!2d20.466712877387664!3d44.80306377730564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475a7aa09d8a2c09%3A0x1d63f645f7e27ac0!2sRitmi%C4%8Dka%20gimnastika!5e0!3m2!1sen!2srs!4v1733355489713!5m2!1sen!2srs"
-            width="500"
-            height="350"
-            className={style['iframe']}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+
+        <div>
+          <label htmlFor="description">Description:</label>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
         </div>
-      </div>
+
+        <div>
+          <label htmlFor="location">Location:</label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="date">Date:</label>
+          <input
+            type="date"
+            id="date"
+            name="date"
+            value={formData.date}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="time">Time:</label>
+          <input
+            type="time"
+            id="time"
+            name="time"
+            value={formData.time}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="type">Type:</label>
+          <select
+            id="type"
+            name="type"
+            value={formData.type}
+            onChange={handleChange}
+            required
+          >
+            <option value="Predavanje">Predavanje</option>
+            <option value="Izlozba">Izlozba</option>
+            <option value="Dan otvorenih vrata">Dan otvorenih vrata</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="tag">Tag:</label>
+          <select
+            id="tag"
+            name="tag"
+            value={formData.tag}
+            onChange={handleChange}
+            required
+          >
+            <option value="Statisika">Statisika</option>
+            <option value="Numerika">Numerika</option>
+            <option value="Vestacka intelegencija">Vestacka intelegencija</option>
+            <option value="Back-end">Back-end</option>
+            <option value="Front-end">Front-end</option>
+            <option value="Primenjena Fizika i Elektrotehnika">Primenjena Fizika i Elektrotehnika</option>
+          </select>
+        </div>
+
+        <button type="submit">Submit</button>
+      </form>
     </div>
   );
 };

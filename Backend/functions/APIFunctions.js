@@ -1,35 +1,52 @@
 const User = require('../models/user_model');
 const Event = require('../models/event_model');
 const LearningMaterial = require('../models/learningMaterial_model');
+const jwt = require('jsonwebtoken');
+
 require('dotenv').config();
 
-//post
-const AddNewEvent = async (req, res) =>{
+const AddNewEvent = async (req, res) => {
     try {
-        const data = req.body;
-        let event = new Event(data);
+        const token = req.cookies.token;
 
-        const eventId = await Event.findOne({name: data.title});
-        if (eventId) {
-            return res.status(303).json({ 
-                message: "Event vec postoji. :(" 
+        if (!token) {
+            return res.status(401).json({
+                message: "Unauthorized. No token provided."
             });
         }
 
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const username = decoded.username;
+
+        const data = req.body;
+        let event = new Event({
+            ...data,
+            user: username
+        });
+
+        const eventId = await Event.findOne({ name: data.title });
+
+        if (eventId) {
+            return res.status(303).json({
+                message: "Event already exists. :("
+            });
+        }
+        
         event = await event.save();
 
-        console.log("Creating event is successfull :D");
+        console.log("Creating event was successful :D");
 
-        res.status(200).json({ 
-            message: "Event napravljen. :)" 
+        res.status(200).json({
+            message: "Event created successfully. :)"
         });
     } catch (error) {
+        console.error(error); // Log the error for debugging purposes
         res.status(500).json({
-            message: "Nisam uspeo da napravim event :(",
+            message: "Failed to create the event :(",
             error: error.message
         });
     }
-}
+};
 
 //post
 const AddNewLearningMaterial = async (req, res) =>{
