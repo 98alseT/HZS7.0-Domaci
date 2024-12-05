@@ -34,7 +34,7 @@ const Post = ({ info, username }) => {
   };
 
   return (
-    <div className={style['post']} onClick={handlePostClick}>
+    <div className={style['post']}>
       <img
         src={info.eventImage || img}
         alt="event-poster"
@@ -42,16 +42,14 @@ const Post = ({ info, username }) => {
         onClick={handlePostClick}
       />
       <div className={style['sep']}>
-        <div className={style['desc']}>
+        <div className={style['desc']} onClick={handlePostClick}>
           <h1 className={style['event-name']}>{info.title}</h1>
           <p className={style['event-description']}>{info.description}</p>
         </div>
-        <button className={style['join-event']}>Join</button>
-        {info.user === username && (  // Check if the post's user matches the logged-in user
-          <button onClick={handleDelete} className={style['join-event']}>
-            Delete
-          </button>
-        )}
+      <button className={style['join-event']}>Join</button>
+      {info.user === username && (
+        <button onClick={handleDelete} className={style['join-event']}>Delete</button>
+      )}
       </div>
     </div>
   );

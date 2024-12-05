@@ -194,7 +194,7 @@ const DeleteLearningMaterial = async (req, res) => {
 const GetEvent = async (req, res) => {
     try {
         const { postId } = req.params;
-        const post = await Event.findById(postId); // Adjust model to match your schema
+        const post = await Event.findById(postId);
     
         if (!post) {
           return res.status(404).json({ message: 'Post not found' });
