@@ -15,7 +15,6 @@ const AddPost = () => {
     tag: 'Statistika'
   });
 
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -24,7 +23,6 @@ const AddPost = () => {
     });
   };
 
-  // Handle form submission and POST request to the server
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -39,31 +37,28 @@ const AddPost = () => {
       tag: formData.tag
     };
 
-    // Send POST request to the server with credentials included
     fetch('http://localhost:3000/api/event', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',  // Send data as JSON
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(postData),  // Convert the form data into JSON
-      credentials: 'include',  // This will send cookies (authentication tokens) along with the request
+      body: JSON.stringify(postData),
+      credentials: 'include',
     })
       .then(response => {
         if (!response.ok) {
-          // If response status is not OK (200-299), throw an error
           return response.json().then(errorData => {
             throw new Error(errorData.message || 'Something went wrong');
           });
         }
-        return response.json();  // Parse JSON if response is OK
+        return response.json(); 
       })
       .then(data => {
         console.log('Success:', data);
-        navigate('/');  // Only navigate if the request was successful
+        navigate('/');
       })
       .catch(error => {
         console.error('Error:', error);
-        // Optionally, show an error message to the user
         alert(`Error: ${error.message}`);
       });
     
@@ -72,7 +67,6 @@ const AddPost = () => {
   return (
     <div className={style['main']}>
       <form onSubmit={handleSubmit}>
-        {/* Your input fields here */}
         <div>
           <label htmlFor="title">Title:</label>
           <input
