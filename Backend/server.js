@@ -22,7 +22,7 @@ app.get('/api/mymaterials', authenticateToken, async (req, res) => {
     await MyMaterials(req,res);
 });
 
-app.get('/api/event/current', authenticateToken, async (req, res) => {
+app.get('/api/event/:postId', authenticateToken, async (req, res) => {
     await GetEvent(req,res);
 });
 

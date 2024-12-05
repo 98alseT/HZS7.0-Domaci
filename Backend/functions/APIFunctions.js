@@ -193,20 +193,18 @@ const DeleteLearningMaterial = async (req, res) => {
 //get
 const GetEvent = async (req, res) => {
     try {
-        const eventBody = req.body;
-
-        const event = await Event.findOne(eventBody);
-
-        if (!event) {
-            return res.status(404).json({ message: "Event not found" });
+        const { postId } = req.params;
+        const post = await Event.findById(postId); // Adjust model to match your schema
+    
+        if (!post) {
+          return res.status(404).json({ message: 'Post not found' });
         }
-
-        return res.status(200).json(event.id);
-
+    
+        res.status(200).json(post);
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "An error occurred", error: error.message });
-    }
+        console.error('Error fetching post:', error);
+        res.status(500).json({ message: 'Failed to fetch post' });
+    }    
 }
 
 

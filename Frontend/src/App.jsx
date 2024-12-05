@@ -21,7 +21,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Main isSideSearchVisible={isSideSearchVisible} />}/>
         <Route path="/add-post" element={<AddPost />} />
-        <Route path="/event-details" element={<EventDetails />}/>
+        <Route path="/event-details/:postId" element={<EventDetails />}/>
         <Route path="/sign-up" element={<SignUp />}/>
         <Route path="/log-in" element={<LogIn />}/>
       </Routes>

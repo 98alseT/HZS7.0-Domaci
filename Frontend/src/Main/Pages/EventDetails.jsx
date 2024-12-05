@@ -1,46 +1,77 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import style from '../PagesCSS/AddPost.Module.css';
 import img from '../../assets/testEvent.jpg';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const AddPost = () => {
+const EventDetails = () => {
   const navigate = useNavigate();
+  const { postId } = useParams(); // Extract postId from URL
+  const [post, setPost] = useState(null); // State for post data
+
+  useEffect(() => {
+    const fetchPostData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/event/${postId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include', // Include cookies for authentication
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setPost(data); // Store post data in state
+        } else {
+          console.error('Failed to fetch post data');
+        }
+      } catch (error) {
+        console.error('Error fetching post data:', error);
+      }
+    };
+
+    fetchPostData();
+  }, [postId]);
+
+  // Display loading message until data is fetched
+  if (!post) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className={style['main']}>
       <div className={style['left-section']}>
-        <h1>Naziv događaja</h1>
+        <h1>{post.title}</h1>
         <div className={style['description']}>
-          <p>Opis događaja.</p>
+          <p>{post.description}</p>
         </div>
         <div className={style['buttons']}>
-          <button className={style['backButton']} onClick={() => navigate('/')}>Nazad</button>
+          <button className={style['backButton']} onClick={() => navigate('/')}>
+            Nazad
+          </button>
           <button className={style['includeButton']}>Uključi</button>
         </div>
       </div>
 
       <div className={style['right-section']}>
         <div className={style['imageContainer']}>
-          <img src={img} alt="event-photo" className={style['image']} />
+          <img
+            src={post.eventImage || 'placeholder.jpg'} // Use post image or a fallback
+            alt="event-poster"
+            className={style['image']}
+          />
         </div>
         <div className={style['details']}>
           <div className={style['locationAndTime']}>
-            <span className={style['location']}>Lokacija</span>
-            <span className={style['time']}>Vreme</span>
+            <span className={style['location']}>{post.location}</span>
+            <span className={style['time']}>
+              {post.date} {post.time}
+            </span>
           </div>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2830.907988175154!2d20.466712877387664!3d44.80306377730564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475a7aa09d8a2c09%3A0x1d63f645f7e27ac0!2sRitmi%C4%8Dka%20gimnastika!5e0!3m2!1sen!2srs!4v1733355489713!5m2!1sen!2srs"
-            width="500"
-            height="350"
-            className={style['iframe']}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
         </div>
       </div>
     </div>
   );
 };
 
-export default AddPost;
+export default EventDetails;

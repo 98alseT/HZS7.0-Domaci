@@ -5,6 +5,10 @@ import { useNavigate } from 'react-router-dom';
 const Post = ({ info, username }) => {
   const navigate = useNavigate();
 
+  const handlePostClick = () => {
+    navigate(`/event-details/${info._id}`);
+  };
+
   const handleDelete = async () => {
     try {
       const response = await fetch(`http://localhost:3000/api/event`, {
@@ -29,12 +33,12 @@ const Post = ({ info, username }) => {
   };
 
   return (
-    <div className={style['post']}>
+    <div className={style['post']} onClick={handlePostClick}>
       <img
         src={info.eventImage}
         alt="event-poster"
         className={style['event-poster']}
-        onClick={() => navigate('/event-details')}
+        onClick={handlePostClick}
       />
       <div className={style['sep']}>
         <div className={style['desc']}>
