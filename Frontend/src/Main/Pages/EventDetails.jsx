@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import style from '../PagesCSS/AddPost.Module.css';
+import style from '../PagesCSS/EventDetails.Module.css';
 import img from '../../assets/testEvent.jpg';
 import { useNavigate, useParams } from 'react-router-dom';
 
