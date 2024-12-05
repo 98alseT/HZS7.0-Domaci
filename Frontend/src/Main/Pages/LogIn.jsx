@@ -36,7 +36,7 @@ const LogIn = () => {
     <div className={style.body}>
       <div className={style['main-container']}>
         <h1 className={style.title}>Log In</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={style['no-style']}>
           <input
             className={style.input}
             type="text"

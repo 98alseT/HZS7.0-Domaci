@@ -48,7 +48,7 @@ const SignUp = () => {
     <div className={style.body}>
       <div className={style['main-container']}>
         <h1 className={style.title}>Sign Up</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={style['no-style']}>
           <input
             className={style.input}
             type="text"
