@@ -29,7 +29,6 @@ const Main = ({ isSideSearchVisible }) => {
           <button className={`${style['dodaj-button']} ${style['dodaj-post']}`} onClick={() => navigate('/add-post')}>
             Dodaj post
           </button>
-          <button className={style['dodaj-button']}>Dodaj tag</button>
         </div>
       </div>
 
