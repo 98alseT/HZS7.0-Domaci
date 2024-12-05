@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import style from '../PagesCSS/LogInSignUp.module.css';
 import { useNavigate } from 'react-router-dom';
+import { validateForm} from './LogInSignUp';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -11,7 +12,8 @@ const SignUp = () => {
     email: '',
   });
 
-  const [error, setError] = useState('');  // State for handling error messages
+  const [errors, setErrors] = useState({});
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,8 +22,15 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     try {
-      const response = await fetch('http://localhost:4000/sign-up', {  // Make sure this endpoint is correct
+      const response = await fetch('http://localhost:4000/sign-up', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +42,7 @@ const SignUp = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Sign-Up successful:', data);
-        navigate('/');  // Navigate to home page after successful sign-up
+        navigate('/');
       } else {
         const errorData = await response.json();
         setError(errorData.message || 'Sign-Up failed');
@@ -56,8 +65,9 @@ const SignUp = () => {
             value={formData.username}
             placeholder="Username"
             onChange={handleChange}
-            required
           />
+          {errors.username && <p className={style.error}>{errors.username}</p>}
+
           <input
             className={style.input}
             type="email"
@@ -65,22 +75,22 @@ const SignUp = () => {
             value={formData.email}
             placeholder="Email"
             onChange={handleChange}
-            required
           />
+          {errors.email && <p className={style.error}>{errors.email}</p>}
+
           <input
             className={style.input}
             type="password"
             name="password"
             value={formData.password}
             placeholder="Password"
-            minLength="8"
             onChange={handleChange}
-            required
           />
+          {errors.password && <p className={style.error}>{errors.password}</p>}
+
           <button className={style.button} type="submit">Sign Up</button>
         </form>
-        
-        {/* Error message will display here if it exists */}
+
         {error && <p className={style.error}>{error}</p>}
 
         <p className={style.register}>

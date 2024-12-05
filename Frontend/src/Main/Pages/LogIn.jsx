@@ -1,20 +1,37 @@
 import React, { useState } from 'react';
 import style from '../PagesCSS/LogInSignUp.module.css';
 import { useNavigate } from 'react-router-dom';
+import { validateLogInForm } from './LogIn';
 
 const LogIn = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
+
+  const [errors, setErrors] = useState({});
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateLogInForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     try {
-      const response = await fetch('http://localhost:4000/log-in', { 
+      const response = await fetch('http://localhost:4000/log-in', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(formData),
         credentials: 'include',
       });
 
@@ -40,19 +57,23 @@ const LogIn = () => {
           <input
             className={style.input}
             type="text"
+            name="username"
             placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
+            value={formData.username}
+            onChange={handleChange}
           />
+          {errors.username && <p className={style.error}>{errors.username}</p>}
+
           <input
             className={style.input}
             type="password"
+            name="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+            value={formData.password}
+            onChange={handleChange}
           />
+          {errors.password && <p className={style.error}>{errors.password}</p>}
+
           <button className={style.button} type="submit">Log In</button>
         </form>
         {error && <p className={style.error}>{error}</p>}
