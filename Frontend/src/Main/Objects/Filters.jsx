@@ -53,7 +53,6 @@ const Filters = ({ onSearch }) => {
           className={style['confirm-search-button']}
           onClick={handleSubmit}
         >
-          Search
         </button>
       </div>
     </div>

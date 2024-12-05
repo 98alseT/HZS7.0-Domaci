@@ -53,13 +53,6 @@ const EventDetails = () => {
       </div>
 
       <div className={style['right-section']}>
-        <div className={style['imageContainer']}>
-          <img
-            src={post.eventImage || img}
-            alt="event-poster"
-            className={style['image']}
-          />
-        </div>
         <div className={style['details']}>
           <div className={style['locationAndTime']}>
             <span className={style['location']}>{post.location}</span>

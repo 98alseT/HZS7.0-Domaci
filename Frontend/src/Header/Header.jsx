@@ -77,7 +77,7 @@ const Header = ({ toggleSideSearch }) => {
         <div className={style.buttons}>
           {isLoggedIn ? (
             <>
-              <p>{username}</p>
+              <p className={style['username']}>{username}</p>
               <button className={style['sign-in']} onClick={handleLogOut}>Log Out</button>
             </>
           ) : (
